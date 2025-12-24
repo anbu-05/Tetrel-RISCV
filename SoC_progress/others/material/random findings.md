@@ -1,0 +1,2 @@
+- questa starter edition does not support program blocks: [Trying to use Verification Features in Questa Intel FPGA Edition - Intel Community](https://community.intel.com/t5/Intel-FPGA-Software-Installation/Trying-to-use-Verification-Features-in-Questa-Intel-FPGA-Edition/m-p/1469035?utm_source=chatgpt.com) -> [Solved: Can't execute the assertion debug on tutorial - Intel Community](https://community.intel.com/t5/Intel-Quartus-Prime-Software/Can-t-execute-the-assertion-debug-on-tutorial/m-p/1426265)
+- 
