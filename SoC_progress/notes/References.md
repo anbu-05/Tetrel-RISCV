@@ -1,0 +1,3 @@
+- [amazing explanation of AXI4-Lite](https://www.youtube.com/watch?v=okiTzvihHRA)
+	- [a playlist on it](https://youtube.com/playlist?list=PLaSdxhHqai2_7WZIhCszu5PLSbZURmibN&si=NAlQ0x07wDZiDKve)
+- 
