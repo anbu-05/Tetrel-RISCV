@@ -2,7 +2,7 @@
 
 `timescale 1 ns / 1 ps
 
-module testbench_3;
+module top_tb;
 
     // clock / reset
     reg clk = 1;

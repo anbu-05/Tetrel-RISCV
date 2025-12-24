@@ -8,7 +8,7 @@ vlog ../rtl/picorv32.v
 vlog ../rtl/simple_mem.sv
 vlog ../rtl/simpleuart.v
 vlog ../rtl/simpleuart_axi_adapter.sv
-vlog ../rtl/top_uart_axi.sv
+vlog ../rtl/top.sv
 vlog ../rtl/axi_interf.sv
 vlog ../rtl/axi_mux.sv
 
