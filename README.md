@@ -1,6 +1,8 @@
 # Tetrel-RISCV
 this is a RV32IM SoC built around the picorv32 core. it is currently under development
 
+NOTE: i recreated this project to fit a new project structure (after learning a bit more on how to use git). you can find the depreciated repo here: [RISCV_project](https://github.com/anbu-05/RISCV_project)
+
 ## Overview
 
 Main directory: `/RISCV_SoC/`
