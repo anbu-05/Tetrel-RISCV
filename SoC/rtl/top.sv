@@ -1,4 +1,4 @@
-module top_uart_axi (
+module top (
     input  logic clk,
     input  logic resetn
 );
