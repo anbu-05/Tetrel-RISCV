@@ -10,7 +10,8 @@ Folder structure:
 ```
 /RISCV_SoC/
 ├─ RISCV_core/           # Main CPU design
-│  ├─ programs/          # hex files to be loaded onto memory
+│  ├─ hex/               # hex files to be loaded onto memory
+│  │  └─ prog/           # the assembly files corresponding to hex files
 │  ├─ rtl/               # Design (ALU, RegisterFile, Decoder, etc.)
 │  ├─ tb/                # Testbench files
 │  └─ sim/               # Questa simulation setup (run.do and configs)
@@ -19,6 +20,10 @@ Folder structure:
 ```
 
 The core was built using Intel/Altera QuestaSim.
+
+to assemble and link the programs, so far ive been using this [RISC-V Online Assembler](https://riscvasm.lucasteske.dev/#) and some chatgpt
+
+to verify individual commands, i use this [RISC-V Instruction Encoder/Decoder](https://luplab.gitlab.io/rvcodecjs/#q=40628433&abi=false&isa=AUTO)
 
 ## Memory mapping
     - ROM = 32'h00000000 to 32'h0000FFFF, (64 KiB) -Data memory
