@@ -1,0 +1,8 @@
+# ignore everything under sim/
+sim/*
+
+# ...except the run script
+!sim/*.do
+
+# (optional) keep the folder even when empty
+!sim/.gitkeep
