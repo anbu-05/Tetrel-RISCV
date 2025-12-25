@@ -37,6 +37,8 @@ Program assembly and verification are currently done using lightweight external 
 
 These tools are used for validation and experimentation during development. Generated `.hex` files are checked into the repository to ensure reproducible simulation results.
 
+you can find a progress log in [/SoC_progress/progress/Progress.md](https://github.com/anbu-05/Tetrel-RISCV/blob/main/SoC_progress/progress/Progress.md)
+
 ---
 
 ## Running the SoC
