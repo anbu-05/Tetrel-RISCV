@@ -483,6 +483,7 @@ we need to get the SoC verified and ready to send for external verification. the
 - create a better and a more optimized AXI lite adapter.
 - implement a GPIO module
 - look into alternatives to a mux for having multiple AXI slaves.
+- figure out the CPU clock frequency and DIV values required to get standard serial baud rates
 
 ---
 before that, i need to restructure the github repo, because i learnt how to use git better.
