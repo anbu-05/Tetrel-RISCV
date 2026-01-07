@@ -4,13 +4,22 @@ module top (
 );
 //---------declarations---------
     // Native PicoRV32 memory interface
-    wire        mem_valid;
-    wire        mem_instr;
-    wire [31:0] mem_addr;
-    wire [31:0] mem_wdata;
-    wire [ 3:0] mem_wstrb;
-    wire [31:0] mem_rdata;
-    wire        mem_ready;
+    wire        core_mem_valid;
+    wire        core_mem_instr;
+    wire [31:0] core_mem_addr;
+    wire [31:0] core_mem_wdata;
+    wire [ 3:0] core_mem_wstrb;
+    wire [31:0] core_mem_rdata;
+    wire        core_mem_ready;
+
+    // simple mem memory interface
+    wire        memory_mem_valid;
+    wire        memory_mem_instr;
+    wire [31:0] memory_mem_addr;
+    wire [31:0] memory_mem_wdata;
+    wire [ 3:0] memory_mem_wstrb;
+    wire [31:0] memory_mem_rdata;
+    wire        memory_mem_ready;
 
     //simpleuart interface
 	wire        ser_tx;
@@ -37,13 +46,13 @@ module top (
     picorv32 core (
         .clk        (clk),
         .resetn     (resetn),
-        .mem_valid  (mem_valid),
-        .mem_instr  (mem_instr),
-        .mem_ready  (mem_ready),
-        .mem_addr   (mem_addr),
-        .mem_wdata  (mem_wdata),
-        .mem_wstrb  (mem_wstrb),
-        .mem_rdata  (mem_rdata)
+        .mem_valid  (core_mem_valid),
+        .mem_instr  (core_mem_instr),
+        .mem_ready  (core_mem_ready),
+        .mem_addr   (core_mem_addr),
+        .mem_wdata  (core_mem_wdata),
+        .mem_wstrb  (core_mem_wstrb),
+        .mem_rdata  (core_mem_rdata)
     );
 
     // PicoRV32 AXI adapter
@@ -51,13 +60,13 @@ module top (
         // Native interface
         .clk        (clk),
         .resetn     (resetn),
-        .mem_valid  (mem_valid),
-        .mem_instr  (mem_instr),
-        .mem_ready  (mem_ready),
-        .mem_addr   (mem_addr),
-        .mem_wdata  (mem_wdata),
-        .mem_wstrb  (mem_wstrb),
-        .mem_rdata  (mem_rdata),
+        .mem_valid  (core_mem_valid),
+        .mem_instr  (core_mem_instr),
+        .mem_ready  (core_mem_ready),
+        .mem_addr   (core_mem_addr),
+        .mem_wdata  (core_mem_wdata),
+        .mem_wstrb  (core_mem_wstrb),
+        .mem_rdata  (core_mem_rdata),
 
         //AXI interface
             //Write Address Channel
@@ -91,15 +100,39 @@ module top (
         .slave1_axi(uart_axi.slave)
     );
 
-    // AXI based simple memory module
-    simple_mem #(
-        .PROGRAM_HEX("../hex/uart_smoke_test.hex")
-    ) mem (
+    //simple memory AXI adapter
+    simple_mem_axi_adapter mem_adapter (
         .clk        (clk),
         .resetn     (resetn),
 
         //AXI interface
-        .mem_axi(mem_axi.slave)
+        .mem_axi(mem_axi.slave),
+
+        // Native memory interface
+        .mem_valid  (memory_mem_valid),
+        .mem_instr  (memory_mem_instr),
+        .mem_ready  (memory_mem_ready),
+        .mem_addr   (memory_mem_addr),
+        .mem_wdata  (memory_mem_wdata),
+        .mem_wstrb  (memory_mem_wstrb),
+        .mem_rdata  (memory_mem_rdata)
+    );
+
+    //simple memory module
+    simple_mem #(
+        .PROGRAM_HEX("../hex/smoke_test.hex")
+    ) mem (
+        .clk        (clk),
+        .resetn     (resetn),
+
+        // Native memory interface
+        .mem_valid  (memory_mem_valid),
+        .mem_instr  (memory_mem_instr),
+        .mem_ready  (memory_mem_ready),
+        .mem_addr   (memory_mem_addr),
+        .mem_wdata  (memory_mem_wdata),
+        .mem_wstrb  (memory_mem_wstrb),
+        .mem_rdata  (memory_mem_rdata)
     );
 
     //uart AXI adapter

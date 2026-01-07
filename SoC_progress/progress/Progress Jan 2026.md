@@ -29,3 +29,8 @@ i have 2 hours to do the following
 - make GPIO module and implement axi in it
 - write a bunch of test programs to show proof of testing.
 the last part should be pretty easy using chatgpt. 
+
+### Jan 7
+the meeting got postponed to today
+anyways, ive implemented the new axi intro memory but it's not working
+im gonna write a bunch of test programs for the old core to show proof of testing now.
