@@ -1,42 +1,20 @@
-module simple_mem_axi_adapter #(
+module axi_adapter_template #(
     //
 ) (
     input logic clk, resetn,
 
     // AXI4-lite slave memory interface
 
-    axi_interf.slave mem_axi,
-
-    // Native PicoRV32 memory interface (for slave)
-
-	output logic        mem_valid, //
-	output logic        mem_instr,
-	input  logic        mem_ready, //
-	output logic [31:0] mem_addr, //
-	output logic [31:0] mem_wdata, //
-	output logic [ 3:0] mem_wstrb, //
-	input  logic [31:0] mem_rdata //
+    axi_interf.slave mem_axi
 
 );
+
+    reg [31:0] memory [0:7]; //temporary memory dump location
 
     logic [31:0] read_addr;
     logic [31:0] write_addr;
     wire [31:0] read_data;
     logic [31:0] write_data;
-
-    //---------memory control---------
-    assign mem_valid = mem_axi.awvalid;
-        //---------read---------
-    assign read_data = mem_rdata;
-        //---------write---------
-    assign mem_wdata = write_data;
-        //---------address management---------
-    always_comb begin : mem_addr_mgmt
-        if (mem_valid) begin 
-            mem_addr <= write_addr;
-            mem_wstrb <= mem_axi.wstrb;
-        end else mem_addr <= read_addr;
-    end
 
     //-------------------------------
     //---------read channels---------
@@ -51,7 +29,7 @@ module simple_mem_axi_adapter #(
         end else read_pending <= read_pending_set || (read_pending && !read_pending_clr);
     end
 
-        //---------AR channel---------
+    //---------AR channel---------
     always_ff @( posedge clk or negedge resetn ) begin : AR
         if (!resetn) begin
             read_addr <= 0;
@@ -66,7 +44,7 @@ module simple_mem_axi_adapter #(
         end
     end
 
-        //---------R channel---------
+    //---------R channel---------
     always_ff @( posedge clk or negedge resetn ) begin : R
         if (!resetn) begin
             mem_axi.rvalid <= 0;
@@ -81,6 +59,9 @@ module simple_mem_axi_adapter #(
             end else read_pending_clr <= 0;
         end
     end
+
+    //---------memory read---------
+    assign read_data = memory[read_addr];
 
 
 
@@ -107,14 +88,14 @@ module simple_mem_axi_adapter #(
         end else w_complete <= w_complete_set || (w_complete && !w_complete_clr);
     end
 
-        //---------AW channel---------
+    //---------AW channel---------
     always_ff @( posedge clk or negedge resetn ) begin : AW
         if (!resetn) begin
             write_addr <= 0;
             mem_axi.awready <= 0;
             aw_complete_set <= 0;
         end else begin
-            mem_axi.awready <= !aw_complete && mem_ready; //can be driven by slave device also 
+            mem_axi.awready <= !aw_complete; //can be driven by slave device also 
             if (mem_axi.awready && mem_axi.awvalid) begin
                 write_addr <= mem_axi.awaddr;
                 aw_complete_set <= 1;
@@ -122,32 +103,31 @@ module simple_mem_axi_adapter #(
         end
     end
 
-        //---------W channel---------
+    //---------W channel---------
     always_ff @( posedge clk or negedge resetn ) begin : W
         if (!resetn) begin
             write_data <= 0;
             mem_axi.wready <= 0;
             w_complete_set <= 0;
         end else begin
-            mem_axi.wready <= !w_complete && mem_ready; //can be driven by slave device also 
+            mem_axi.wready <= !w_complete; //can be driven by slave device also 
             if (mem_axi.wready && mem_axi.wvalid) begin
-                write_data <= mem_axi.wdata;
+                // write_data <= mem_axi.wdata;
                 /*
                 note: uncomment the above line and comment the below lines, 
                 and connect mem_axi.wstrb 
                 if you want the slave to take care of write strobing, 
                 instead of the adapter.
                 */
-                // if (mem_axi.wstrb[0]) write_data[ 7: 0] <= mem_axi.wdata[ 7: 0];
-                // if (mem_axi.wstrb[1]) write_data[15: 8] <= mem_axi.wdata[15: 8];
-                // if (mem_axi.wstrb[2]) write_data[23:16] <= mem_axi.wdata[23:16];
-                // if (mem_axi.wstrb[3]) write_data[31:24] <= mem_axi.wdata[31:24];
+                if (mem_axi.wstrb[0]) write_data[ 7: 0] <= mem_axi.wdata[ 7: 0];
+                if (mem_axi.wstrb[1]) write_data[15: 8] <= mem_axi.wdata[15: 8];
+                if (mem_axi.wstrb[2]) write_data[23:16] <= mem_axi.wdata[23:16];
+                if (mem_axi.wstrb[3]) write_data[31:24] <= mem_axi.wdata[31:24];
                 w_complete_set <= 1;
             end else w_complete_set <= 0;
         end
     end
 
-    //note: for use in other kinds of slaves
 
     //---------memory dump---------
     always_ff @( posedge clk or negedge resetn ) begin : mem_dump
