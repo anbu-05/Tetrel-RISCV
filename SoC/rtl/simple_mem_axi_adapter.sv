@@ -24,22 +24,8 @@ module simple_mem_axi_adapter #(
     wire [31:0] read_data;
     logic [31:0] write_data;
 
-    //---------memory control---------
-    assign mem_valid = mem_axi.awvalid;
-        //---------read---------
-    assign read_data = mem_rdata;
-        //---------write---------
-    assign mem_wdata = write_data;
-        //---------address management---------
-    always_comb begin : mem_addr_mgmt
-        if (mem_valid) begin 
-            mem_addr <= write_addr;
-            mem_wstrb <= mem_axi.wstrb;
-        end else mem_addr <= read_addr;
-    end
-
-    //-------------------------------
-    //---------read channels---------
+//-------------------------------
+//---------read channels---------
 
     logic read_pending_set;
     logic read_pending_clr;
@@ -56,9 +42,9 @@ module simple_mem_axi_adapter #(
         if (!resetn) begin
             read_addr <= 0;
             read_pending_set <= 0;
-            mem_axi.arready <= 0;
+            // mem_axi.arready <= 0;
         end else begin
-            mem_axi.arready <= !read_pending; //can be driven by slave device also
+            // mem_axi.arready <= !read_pending; //can be driven by slave device also
             if (mem_axi.arready && mem_axi.arvalid) begin
                 read_addr <= mem_axi.araddr;
                 read_pending_set <= 1;
@@ -84,8 +70,8 @@ module simple_mem_axi_adapter #(
 
 
 
-    //--------------------------------
-    //---------write channels---------
+//--------------------------------
+//---------write channels---------
 
     logic aw_complete_set;
     logic aw_complete_clr;
@@ -111,10 +97,10 @@ module simple_mem_axi_adapter #(
     always_ff @( posedge clk or negedge resetn ) begin : AW
         if (!resetn) begin
             write_addr <= 0;
-            mem_axi.awready <= 0;
+            // mem_axi.awready <= 0;
             aw_complete_set <= 0;
         end else begin
-            mem_axi.awready <= !aw_complete && mem_ready; //can be driven by slave device also 
+            // mem_axi.awready <= !aw_complete && mem_ready; //can be driven by slave device also 
             if (mem_axi.awready && mem_axi.awvalid) begin
                 write_addr <= mem_axi.awaddr;
                 aw_complete_set <= 1;
@@ -129,7 +115,7 @@ module simple_mem_axi_adapter #(
             mem_axi.wready <= 0;
             w_complete_set <= 0;
         end else begin
-            mem_axi.wready <= !w_complete && mem_ready; //can be driven by slave device also 
+            mem_axi.wready <= !w_complete && mem_axi.awready; //can be driven by slave device also 
             if (mem_axi.wready && mem_axi.wvalid) begin
                 write_data <= mem_axi.wdata;
                 /*
@@ -147,23 +133,42 @@ module simple_mem_axi_adapter #(
         end
     end
 
+//---------memory control---------
+        //---------ready signals---------
+    assign mem_valid = (read_pending) ? mem_axi.arvalid : mem_axi.awvalid; //can be driven by slave device also
+    always_comb begin : mem_ready_mgmt
+        if (read_pending) mem_axi.arready <= mem_ready;
+        else mem_axi.awready <= !aw_complete && mem_ready;
+    end
+        //---------read---------
+    assign read_data = mem_rdata;
+        //---------write---------
+    assign mem_wdata = write_data;
+        //---------address management---------
+    always_comb begin : mem_addr_mgmt
+        if (mem_valid && mem_axi.wstrb) begin 
+            mem_addr <= write_addr;
+            mem_wstrb <= mem_axi.wstrb;
+        end else mem_addr <= read_addr;
+    end
+
     //note: for use in other kinds of slaves
 
-    //---------memory dump---------
-    always_ff @( posedge clk or negedge resetn ) begin : mem_dump
-        if (!resetn) begin
-            aw_complete_clr <= 0;
-            w_complete_clr <= 0;
-        end else begin
-            if (aw_complete && w_complete) begin
-                memory[write_addr] <= write_data;
-                aw_complete_clr <= 1;
-                w_complete_clr <= 1;
-            end else begin
-                aw_complete_clr <= 0;
-                w_complete_clr <= 0;
-            end
-        end
-    end
+    // //---------memory dump---------
+    // always_ff @( posedge clk or negedge resetn ) begin : mem_dump
+    //     if (!resetn) begin
+    //         aw_complete_clr <= 0;
+    //         w_complete_clr <= 0;
+    //     end else begin
+    //         if (aw_complete && w_complete) begin
+    //             memory[write_addr] <= write_data;
+    //             aw_complete_clr <= 1;
+    //             w_complete_clr <= 1;
+    //         end else begin
+    //             aw_complete_clr <= 0;
+    //             w_complete_clr <= 0;
+    //         end
+    //     end
+    // end
 
 endmodule
