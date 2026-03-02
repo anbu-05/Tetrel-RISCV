@@ -1,0 +1,121 @@
+csi-xmsim - CSI: Command line:
+xmsim
+    -f /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xcelium.d/run.lnx8664.22.09.d/cadence-server.vit.ac.in_3505459/xmsim.args
+        +bus_conflict_off
+        -gui
+        -INPUT ../scripts/simulation.tcl
+        -MESSAGES
+        +EMGRLOG xrun.log
+        -XLSTIME 1772448949
+        -XLKEEP
+        -XLMODE ./xcelium.d/run.lnx8664.22.09.d
+        -RUNMODE
+        -CDSLIB ./xcelium.d/run.lnx8664.22.09.d/cds.lib
+        -HDLVAR ./xcelium.d/run.lnx8664.22.09.d/hdl.var
+        -XLNAME xrun
+        -XLVERSION TOOL:	xrun(64)	22.09-s003
+        -XLNAME ./xcelium.d/run.lnx8664.22.09.d/cadence-server.vit.ac.in_3505459
+    -CHECK_VERSION TOOL:	xrun(64)	22.09-s003
+    -LOG_FD 5
+    -LOG_FD_NAME xrun.log
+    -cmdnopsim
+    -runlock /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xcelium.d/run.lnx8664.22.09.d/.xmlib.lock
+    -runscratch /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xcelium.d/run.lnx8664.22.09.d/cadence-server.vit.ac.in_3505459
+
+csi-xmsim - CSI: *F,INTERR: INTERNAL EXCEPTION
+Observed simulation time : 0 FS + 0
+-----------------------------------------------------------------
+The tool has encountered an unexpected condition and must exit.
+Contact Cadence Design Systems customer support about this
+problem and provide enough information to help us reproduce it,
+including the logfile that contains this error message.
+  TOOL:	xmsim(64)	22.09-s003
+  HOSTNAME: cadence-server.vit.ac.in
+  OPERATING SYSTEM: Linux 4.18.0-477.21.1.el8_8.x86_64 #1 SMP Thu Jul 20 08:38:27 EDT 2023 x86_64
+  MESSAGE: T(0): sv_seghandler - trapno -1 addr(0x5d0458c)
+	Stream rts_xfer
+-----------------------------------------------------------------
+
+csi-xmsim - CSI: Cadence Support Investigation, recording details
+External Code in function: <unavailable> offset -65518
+External Code in function: <unavailable> offset -65536
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 25, position 18
+	Scope: top
+	Decompile: logic ser_tx
+	Source  : 	wire        ser_tx;
+	Position: 	                 ^
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 2, position 19
+	Scope: top
+	Decompile: logic clk
+	Source  :     input  logic clk,
+	Position:                    ^
+Verilog Syntax Tree: module declaration (VST_D_MODULE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 1, position 9
+	Scope: top
+	Decompile: top
+	Source  : module top (
+	Position:          ^
+Verilog Syntax Tree: register declaration (VST_D_REG) in module worklib.simpleuart:v (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simpleuart.v, line 37, position 22
+	Scope: simpleuart
+	Decompile: reg cfg_divider
+	Source  : 	reg [31:0] cfg_divider;
+	Position: 	                     ^
+Error: Error processing stack frame(10) - skipping rest of frame!
+Intermediate File: string (IF_STRING) in module worklib.picorv32_regs:v (VST)
+	Decompile: picorv32_regs
+Intermediate File: string (IF_STRING) in module worklib.top_tb:sv (VST)
+	Decompile: top_tb
+Intermediate File: string (IF_STRING) in module worklib.simpleuart:v (VST)
+	Decompile: ser_tx
+External Code in function: <unavailable> offset 176128
+Verilog Syntax Tree: instance declaration (VST_D_INSTANCE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 162, position 18
+	Scope: top
+	Decompile: uart
+	Source  :     simpleuart uart (
+	Position:                   ^
+Verilog Syntax Tree: indexed vector type (VST_T_INDEXED_VEC) in module worklib.picorv32:v (VST)
+	Scope: picorv32
+	Decompile: reg
+Intermediate File: string (IF_STRING) in module worklib.picorv32:v (VST)
+	Decompile: genblk3
+Verilog Syntax Tree: genblk declaration (VST_D_GENBLK) in module worklib.picorv32:v (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/picorv32.v, line 1229, position 33
+	Scope: picorv32.genblk3
+	Source  : 	generate if (TWO_CYCLE_ALU) begin
+	Position: 	                                ^
+Verilog Syntax Tree: module declaration (VST_D_MODULE) in module worklib.simpleuart:v (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simpleuart.v, line 20, position 16
+	Scope: simpleuart
+	Decompile: simpleuart#(DEFAULT_DIV)
+	Source  : module simpleuart #(parameter integer DEFAULT_DIV = 1) (
+	Position:                 ^
+Verilog Syntax Tree: overlay table (VST_OVERLAY_TABLE) in module worklib.top_tb:sv (SIG) <0x7b466bd0>
+	Decompile: top_tb
+Verilog Syntax Tree: module declaration (VST_D_MODULE) in module worklib.top_tb:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/tb/top_tb.sv, line 5, position 12
+	Scope: top_tb
+	Decompile: top_tb
+	Source  : module top_tb;
+	Position:             ^
+Intermediate File: string (IF_STRING) in module worklib.top_tb:sv (VST)
+	Decompile: dut
+Verilog Syntax Tree: instance declaration (VST_D_INSTANCE) in module worklib.top_tb:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/tb/top_tb.sv, line 21, position 10
+	Scope: top_tb
+	Decompile: dut
+	Source  :     top dut(
+	Position:           ^
+Error: Error processing stack frame(16) - skipping rest of frame!
+Verilog Syntax Tree: instance declaration (VST_D_INSTANCE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 46, position 16
+	Scope: top
+	Decompile: core
+	Source  :     picorv32 core (
+	Position:                 ^
+External Code in function: <unavailable> offset -65529
+User Code in function: <unavailable> offset 41086154
+csi-xmsim - CSI: investigation complete took 0.009 secs, send this file to Cadence Support
