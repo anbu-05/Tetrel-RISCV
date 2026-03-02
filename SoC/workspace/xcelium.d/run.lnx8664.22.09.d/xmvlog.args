@@ -1,0 +1,30 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-XLMODE
+./xcelium.d/run.lnx8664.22.09.d
+-RUNMODE
+-sv
+-DELAY_TRIGGER
+-DEFINE
+RTL
+../sourcecode/rtl/axi_interf.sv
+../sourcecode/rtl/axi_mux.sv
+../sourcecode/rtl/picorv32.v
+../sourcecode/rtl/simple_mem_axi_adapter.sv
+../sourcecode/rtl/simple_mem.sv
+../sourcecode/rtl/simpleuart_axi_adapter.sv
+../sourcecode/rtl/simpleuart.v
+../sourcecode/rtl/top.sv
+../sourcecode/tb/top_tb.sv
+-CDSLIB
+./xcelium.d/run.lnx8664.22.09.d/cdsrun.lib
+-HDLVAR
+./xcelium.d/run.lnx8664.22.09.d/hdlrun.var
+-no_analogsolver
+-MESSAGES
+-UPDATE
+-XLLIBSTORE
+./xcelium.d/run.lnx8664.22.09.d/xllibs
+-ALLOWUNBOUND

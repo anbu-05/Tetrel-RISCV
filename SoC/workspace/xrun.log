@@ -1,0 +1,73 @@
+xrun(64): 22.09-s003: (c) Copyright 1995-2022 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	22.09-s003: Started on Mar 02, 2026 at 17:04:08 IST
+xrun
+	-f ../scripts/xrun_options.rtl
+		-sv
+		-v93
+		-debug
+		-gui
+		-delay_trigger
+		-timescale 1ns/1ps
+		+bus_conflict_off
+		-define RTL
+		-f ../sourcecode/dut_src_list.txt
+			../sourcecode/rtl/axi_interf.sv
+			../sourcecode/rtl/axi_mux.sv
+			../sourcecode/rtl/picorv32.v
+			../sourcecode/rtl/simple_mem_axi_adapter.sv
+			../sourcecode/rtl/simple_mem.sv
+			../sourcecode/rtl/simpleuart_axi_adapter.sv
+			../sourcecode/rtl/simpleuart.v
+			../sourcecode/rtl/top.sv
+		../sourcecode/tb/top_tb.sv
+
+   User defined plus("+") options:
+	+bus_conflict_off
+
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
+|
+xmsim: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+xmsim: *W,NOMTDGUI: Multi-Threaded Dumping is disabled for interactive debug mode.
+xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+
+-------------------------------------
+Relinquished control to SimVision...
+xcelium> 
+xcelium> source /home/cadence/install_RB_8.7/XCELIUM2209/tools/xcelium/files/xmsimrc
+xcelium> database -open waves -into waves.shm -default
+Created default SHM database waves
+xcelium> probe -create -shm top_tb.dut.resetn top_tb.dut.clk
+Created probe 1
+xcelium> run 1500
+xmsim: *F,INTERR: INTERNAL EXCEPTION
+Observed simulation time : 0 FS + 0
+-----------------------------------------------------------------
+The tool has encountered an unexpected condition and must exit.
+Contact Cadence Design Systems customer support about this
+problem and provide enough information to help us reproduce it,
+including the logfile that contains this error message.
+  TOOL:	xmsim(64)	22.09-s003
+  HOSTNAME: cadence-server.vit.ac.in
+  OPERATING SYSTEM: Linux 4.18.0-477.21.1.el8_8.x86_64 #1 SMP Thu Jul 20 08:38:27 EDT 2023 x86_64
+  MESSAGE: T(0): sv_seghandler - trapno -1 addr(0x6167bec)
+	Stream rts_xfer
+-----------------------------------------------------------------
+csi-xmsim - CSI: Cadence Support Investigation, sending details to /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xmsim_3627594.err

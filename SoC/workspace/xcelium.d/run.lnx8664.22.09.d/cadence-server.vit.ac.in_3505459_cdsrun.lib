@@ -1,0 +1,3 @@
+SOFTINCLUDE /home/cadence/install_RB_8.7/XCELIUM2209/tools/inca/files/cds.lib
+include ../../../../../../cds.lib
+define worklib ../worklib

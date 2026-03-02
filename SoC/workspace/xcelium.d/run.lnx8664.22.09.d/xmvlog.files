@@ -1,0 +1,13 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/axi_interf.sv
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/axi_mux.sv
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/picorv32.v
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simple_mem_axi_adapter.sv
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simple_mem.sv
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simpleuart_axi_adapter.sv
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simpleuart.v
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv
+/home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/tb/top_tb.sv
