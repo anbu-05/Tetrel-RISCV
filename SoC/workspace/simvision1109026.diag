@@ -1,0 +1,115 @@
+*** Message Type: info ***
+When: Tue Mar 03 11:22:18 AM IST 2026
+SimVision started.
+Version: TOOL:  simvision(64)   22.09-s003
+User: 23bvd0043
+Host: localhost
+Platform: Linux/x86_64/4.18.0-477.21.1.el8_8.x86_64
+Started: Tue Mar 03 11:22:18 AM IST 2026
+Command: /home/cadence/install_RB_8.7/XCELIUM2209/tools.lnx86/simvision/bin/64bit/simvision.exe -connect dc:localhost:56541 -64BIT -nocopyright
+Work Directory: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:22:19 AM IST 2026
+Create browser window: "Design Browser 1"
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:22:20 AM IST 2026
+Create console window: "Console"
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:22:35 AM IST 2026
+Connect to Simulator
+      Design: worklib.picorv32_regs:v
+   Languages: verilog
+   Simulator: XM-Sim
+     Version: TOOL:    xmsim(64)       22.09-s003
+        User: 23bvd0043
+        Host: localhost
+Time Started: Tue Mar 03 11:22:15 AM IST 2026
+  Process ID: 1108839
+   Directory: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace
+     Command: xrun -f ../scripts/xrun_options.rtl
+
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:22:36 AM IST 2026
+Create utility window: "Properties"
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:22:52 AM IST 2026
+Create waveform window: "Waveform 1"
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:23:06 AM IST 2026
+Exit XM-Sim: user
+      Design: worklib.picorv32_regs:v
+   Languages: verilog
+   Simulator: XM-Sim
+     Version: TOOL:    xmsim(64)       22.09-s003
+        User: 23bvd0043
+        Host: localhost
+Time Started: Tue Mar 03 11:22:15 AM IST 2026
+  Process ID: 1108839
+   Directory: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace
+     Command: xrun -f ../scripts/xrun_options.rtl
+
+ 
+*** Message Type: error ***
+When: Tue Mar 03 11:23:06 AM IST 2026
+XM-Sim Crashed:
+      Design: worklib.picorv32_regs:v
+   Languages: verilog
+   Simulator: XM-Sim
+     Version: TOOL:    xmsim(64)       22.09-s003
+        User: 23bvd0043
+        Host: localhost
+Time Started: Tue Mar 03 11:22:15 AM IST 2026
+  Process ID: 1108839
+   Directory: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace
+     Command: xrun -f ../scripts/xrun_options.rtl
+      Design: worklib.picorv32_regs:v
+   Languages: verilog
+   Simulator: XM-Sim
+     Version: TOOL: xmsim(64)       22.09-s003
+        User: 23bvd0043
+        Host: localhost
+Time Started: Tue Mar 03 11:22:15 AM IST 2026
+  Process ID: 1108839
+   Directory: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace
+     Command: xrun -f ../scripts/xrun_options.rtl
+
+Outstanding STRAP Requests:
+        strap::report enable out
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:23:45 AM IST 2026
+Recall Simulator
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:23:51 AM IST 2026
+Connect to Simulator
+      Design: worklib.picorv32_regs:v
+   Languages: verilog
+   Simulator: XM-Sim
+     Version: TOOL:    xmsim(64)       22.09-s003
+        User: 23bvd0043
+        Host: localhost
+Time Started: Tue Mar 03 11:23:48 AM IST 2026
+  Process ID: 1111922
+   Directory: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace
+     Command: xrun -f ../scripts/xrun_options.rtl -tcl -nolog -nocopyright -neverwarn
+
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:24:01 AM IST 2026
+Delete browser window: "Design Browser 1"
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:24:02 AM IST 2026
+Delete waveform window: "Waveform 1"
+ 
+*** Message Type: info ***
+When: Tue Mar 03 11:24:06 AM IST 2026
+SimVision Exit.
+ 

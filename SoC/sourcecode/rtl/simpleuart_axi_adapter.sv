@@ -7,7 +7,7 @@ module simpleuart_axi_adapter #(
 
 	// AXI4-lite slave memory interface
 
-	axi_interf.slave uart_axi,
+	axi_interf uart_axi,
 
     //simpleuart interface
 
@@ -34,7 +34,9 @@ logic [31:0] uart_dat_do_buffer;
 logic debug = 0;
 
 //---wait feedback to core---
-assign memory[0][0] = !reg_dat_wait; //TX_READY
+always_comb begin : wait_fb
+	memory[0][0] <= !reg_dat_wait; //TX_READY
+end
 
 
 //---------axi read logic---------
@@ -88,7 +90,7 @@ assign memory[0][0] = !reg_dat_wait; //TX_READY
 
 					if ((mem_read_addr_buffer >= REG_ORIGIN && mem_read_addr_buffer < REG_ORIGIN + REG_LENGTH)) begin
 
-						read_word_index = (mem_read_addr_buffer) >> 2;
+						read_word_index <= (mem_read_addr_buffer) >> 2;
 
 						if (read_word_index < MEM_WORDS) begin 
 							mem_read_buffer <= memory[read_word_index];
@@ -170,7 +172,7 @@ assign memory[0][0] = !reg_dat_wait; //TX_READY
 						if (uart_axi.wvalid && uart_axi.wready) begin
 							if ((mem_write_addr_buffer >= REG_ORIGIN && mem_write_addr_buffer < REG_ORIGIN + REG_LENGTH)) begin
 
-								write_word_index = (mem_write_addr_buffer) >> 2;
+								write_word_index <= (mem_write_addr_buffer) >> 2;
 
 								if (write_word_index < MEM_WORDS) begin 
 									//---------uart transmit logic---------

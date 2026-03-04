@@ -1,0 +1,66 @@
+Operating system: Linux
+                  0.0.0 Linux 4.18.0-477.21.1.el8_8.x86_64 #1 SMP Thu Jul 20 08:38:27 EDT 2023 x86_64
+CPU: amd64
+     family 6 model 106 stepping 6
+     1 CPU
+
+GPU: UNKNOWN
+
+Crash reason:  DUMP_REQUESTED
+Crash address: 0x7fc1bf44e406
+Process uptime: not available
+
+Thread 0 (crashed)
+ 0  libcbreakpad.so + 0x36406
+    rax = 0x0000000000000000   rdx = 0x0000000000000000
+    rcx = 0x00007fc1bf44ccb2   rbx = 0x00007fc1bd7d8ea0
+    rsi = 0x0000000000000001   rdi = 0x00007fc1bd7d8828
+    rbp = 0x00007fc1bd7d8de0   rsp = 0x00007fc1bd7d8790
+     r8 = 0x0000000000000000    r9 = 0x0000000000000000
+    r10 = 0x0000000000000000   r11 = 0x0000000000000000
+    r12 = 0x0000000000000000   r13 = 0x00007fc1bd7d9198
+    r14 = 0x00007fc1bd7d8e20   r15 = 0x00000000061330ec
+    rip = 0x00007fc1bf44e406
+    Found by: given as instruction pointer in context
+ 1  libcbreakpad.so + 0x34672
+    rbp = 0x00007fc1bd7d8f30   rsp = 0x00007fc1bd7d8df0
+    rip = 0x00007fc1bf44c672
+    Found by: previous frame's frame pointer
+
+Loaded modules:
+0x00400000 - 0x02508fff  xmsim  ???  (main)
+0x7fc1bc8a7000 - 0x7fc1bc8b6fff  waves.dsn  ???
+0x7fc1bc8b7000 - 0x7fc1bc915fff  libdwapi.so  ???
+0x7fc1bcf29000 - 0x7fc1bcf3ffff  libml_uvm.so  ???
+0x7fc1bd7dd000 - 0x7fc1bd8ebfff  libStrapNC.so  ???
+0x7fc1bd9a2000 - 0x7fc1bda33fff  libdcapi.so  ???
+0x7fc1bda63000 - 0x7fc1bdaa9fff  LC_CTYPE  ???
+0x7fc1bdaaa000 - 0x7fc1bdb2cfff  libpcre2-8.so.0.7.1  ???
+0x7fc1bdd2e000 - 0x7fc1bdd54fff  libselinux.so.1  ???
+0x7fc1bdf59000 - 0x7fc1bdf5ffff  libuuid.so.1.3.0  ???
+0x7fc1be161000 - 0x7fc1be1adfff  libblkid.so.1.1.0  ???
+0x7fc1be3b4000 - 0x7fc1be409fff  libmount.so.1.1.0  ???
+0x7fc1be60e000 - 0x7fc1be614fff  librt-2.28.so  ???
+0x7fc1be816000 - 0x7fc1be8b9fff  libnss_myhostname.so.2  ???
+0x7fc1beac1000 - 0x7fc1bead4fff  libresolv-2.28.so  ???
+0x7fc1becd9000 - 0x7fc1becddfff  libnss_dns-2.28.so  ???
+0x7fc1beee0000 - 0x7fc1beeeafff  libnss_files-2.28.so  ???
+0x7fc1bf0f3000 - 0x7fc1bf0fcfff  libnss_sss.so.2  ???
+0x7fc1bf37f000 - 0x7fc1bf40efff  libxmjudy.so.1.0.3  ???
+0x7fc1bf418000 - 0x7fc1bf46bfff  libcbreakpad.so  ???  (WARNING: No symbols, libcbreakpad.so, AFEE64E8DCCB702F471812F06340E4030)
+0x7fc1bf489000 - 0x7fc1bf655fff  libc-2.28.so  ???
+0x7fc1bf85f000 - 0x7fc1bf872fff  libgcc_s.so.1  ???
+0x7fc1bf879000 - 0x7fc1bf9f9fff  libm-2.28.so  ???
+0x7fc1bfbfb000 - 0x7fc1bfbfdfff  libdl-2.28.so  ???
+0x7fc1bfdff000 - 0x7fc1bfe19fff  libpthread-2.28.so  ???
+0x7fc1c001f000 - 0x7fc1c004dfff  ld-2.28.so  ???
+0x7fc1c005e000 - 0x7fc1c01dcfff  libstdc++.so.6.0.28  ???
+0x7fc1c0241000 - 0x7fc1c0245fff  libxdt.so  ???
+0x7ffffc1f0000 - 0x7ffffc1f1fff  linux-gate.so  ???
+
+******BACKTRACE*****
+vserror (xmsim) [0x19fb0b7]
+serror (xmsim) [0x19fcce5]
+sv_seghandler_aux (xmsim) [0xc0b4be]
+sv_seghandler (xmsim) [0xc0bd7d]
+******BACKTRACE END*****
