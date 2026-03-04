@@ -10,6 +10,7 @@
 1ns/1ps
 -no_analogsolver
 -MESSAGES
+top_tb
 -XLMODE
 ./xcelium.d/run.lnx8664.22.09.d
 -RUNMODE
@@ -19,4 +20,5 @@
 ./xcelium.d/run.lnx8664.22.09.d/hdl.var
 -WORK
 worklib
+-IRUNHASTOP
 -HASXLMODE

@@ -1,5 +1,5 @@
 xrun(64): 22.09-s003: (c) Copyright 1995-2022 Cadence Design Systems, Inc.
-TOOL:	xrun(64)	22.09-s003: Started on Mar 02, 2026 at 17:04:08 IST
+TOOL:	xrun(64)	22.09-s003: Started on Mar 05, 2026 at 01:43:40 IST
 xrun
 	-f ../scripts/xrun_options.rtl
 		-sv
@@ -20,31 +20,68 @@ xrun
 			../sourcecode/rtl/simpleuart.v
 			../sourcecode/rtl/top.sv
 		../sourcecode/tb/top_tb.sv
+		-top top_tb
 
    User defined plus("+") options:
 	+bus_conflict_off
 
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xrun: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
-DEFINE UMC_18_CMOS /home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS
-|
-xmsim: *W,DLCPTH (/home/userdata/23bvd0043/cds.lib,29): cds.lib Invalid path '/home/cadence/libkits/UMC_18/MIXED_MODE/Designkits/UMC_18_CMOS' (cds.lib command ignored).
+Recompiling... reason: file '../sourcecode/rtl/top.sv' is newer than expected.
+	expected: Tue Mar  3 13:06:01 2026
+	actual:   Thu Mar  5 01:43:17 2026
+file: ../sourcecode/rtl/top.sv
+	module worklib.top:sv
+		errors: 0, warnings: 0
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+    picorv32 core (
+                |
+xmelab: *W,CUVWSP (../sourcecode/rtl/top.sv,46|16): 13 output ports were not connected:
+xmelab: (../sourcecode/rtl/picorv32.v,91): trap
+xmelab: (../sourcecode/rtl/picorv32.v,103): mem_la_read
+xmelab: (../sourcecode/rtl/picorv32.v,104): mem_la_write
+xmelab: (../sourcecode/rtl/picorv32.v,105): mem_la_addr
+xmelab: (../sourcecode/rtl/picorv32.v,106): mem_la_wdata
+xmelab: (../sourcecode/rtl/picorv32.v,107): mem_la_wstrb
+xmelab: (../sourcecode/rtl/picorv32.v,110): pcpi_valid
+xmelab: (../sourcecode/rtl/picorv32.v,111): pcpi_insn
+xmelab: (../sourcecode/rtl/picorv32.v,112): pcpi_rs1
+xmelab: (../sourcecode/rtl/picorv32.v,113): pcpi_rs2
+xmelab: (../sourcecode/rtl/picorv32.v,121): eoi
+xmelab: (../sourcecode/rtl/picorv32.v,158): trace_valid
+xmelab: (../sourcecode/rtl/picorv32.v,159): trace_data
+
+    picorv32 core (
+                |
+xmelab: *W,CUVWSI (../sourcecode/rtl/top.sv,46|16): 5 input ports were not connected:
+xmelab: (../sourcecode/rtl/picorv32.v,114): pcpi_wr
+xmelab: (../sourcecode/rtl/picorv32.v,115): pcpi_rd
+xmelab: (../sourcecode/rtl/picorv32.v,116): pcpi_wait
+xmelab: (../sourcecode/rtl/picorv32.v,117): pcpi_ready
+xmelab: (../sourcecode/rtl/picorv32.v,120): irq
+
+	Top level design units:
+		top_tb
+xmelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.top:sv <0x7fa02792>
+			streams:  17, words:  4461
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 9       9
+		Interfaces:              3       1
+		Registers:             299     265
+		Scalar wires:           52       -
+		Vectored wires:         42       -
+		Always blocks:          38      39
+		Initial blocks:          6       6
+		Cont. assignments:      33      52
+		Pseudo assignments:     19      19
+		Sparse arrays:           1       -
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.top_tb:sv
 xmsim: *W,NOMTDGUI: Multi-Threaded Dumping is disabled for interactive debug mode.
 xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
 
@@ -52,22 +89,11 @@ xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009
 Relinquished control to SimVision...
 xcelium> 
 xcelium> source /home/cadence/install_RB_8.7/XCELIUM2209/tools/xcelium/files/xmsimrc
-xcelium> database -open waves -into waves.shm -default
-Created default SHM database waves
-xcelium> probe -create -shm top_tb.dut.resetn top_tb.dut.clk
-Created probe 1
-xcelium> run 1500
-xmsim: *F,INTERR: INTERNAL EXCEPTION
-Observed simulation time : 0 FS + 0
------------------------------------------------------------------
-The tool has encountered an unexpected condition and must exit.
-Contact Cadence Design Systems customer support about this
-problem and provide enough information to help us reproduce it,
-including the logfile that contains this error message.
-  TOOL:	xmsim(64)	22.09-s003
-  HOSTNAME: cadence-server.vit.ac.in
-  OPERATING SYSTEM: Linux 4.18.0-477.21.1.el8_8.x86_64 #1 SMP Thu Jul 20 08:38:27 EDT 2023 x86_64
-  MESSAGE: T(0): sv_seghandler - trapno -1 addr(0x6167bec)
-	Stream rts_xfer
------------------------------------------------------------------
-csi-xmsim - CSI: Cadence Support Investigation, sending details to /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xmsim_3627594.err
+xcelium> ...Regained control from SimVision
+-------------------------------------
+
+xcelium> 
+xmsim: *W,CMUSEX: Control-D in interactive input - one more to exit.
+xcelium> exit
+xmsim: *W,NORUNCMD: No 'run' command issued.
+TOOL:	xrun(64)	22.09-s003: Exiting on Mar 05, 2026 at 02:24:35 IST  (total: 00:40:55)

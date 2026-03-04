@@ -28,3 +28,4 @@ RTL
 -XLLIBSTORE
 ./xcelium.d/run.lnx8664.22.09.d/xllibs
 -ALLOWUNBOUND
+-hastop

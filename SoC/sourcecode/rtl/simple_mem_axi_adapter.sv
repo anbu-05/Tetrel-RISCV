@@ -5,7 +5,7 @@ module simple_mem_axi_adapter #(
 
     // AXI4-lite slave memory interface
 
-    axi_interf.slave mem_axi,
+    axi_interf mem_axi,
 
     // Native PicoRV32 memory interface (for slave)
 

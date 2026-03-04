@@ -1,0 +1,8 @@
+../sourcecode/rtl/axi_interf.sv
+../sourcecode/rtl/axi_mux.sv
+../sourcecode/rtl/picorv32.v
+../sourcecode/rtl/simple_mem_axi_adapter.sv
+../sourcecode/rtl/simple_mem.sv
+../sourcecode/rtl/simpleuart_axi_adapter.sv
+../sourcecode/rtl/simpleuart.v
+../sourcecode/rtl/top.sv

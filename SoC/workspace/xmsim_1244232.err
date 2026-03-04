@@ -1,0 +1,120 @@
+csi-xmsim - CSI: Command line:
+xmsim
+    -f /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xcelium.d/run.lnx8664.22.09.d/cadence-server.vit.ac.in_1244232/xmsim.args
+        +bus_conflict_off
+        -gui
+        -MESSAGES
+        +EMGRLOG xrun.log
+        -XLSTIME 1772521184
+        -XLKEEP
+        -XLMODE ./xcelium.d/run.lnx8664.22.09.d
+        -RUNMODE
+        -CDSLIB ./xcelium.d/run.lnx8664.22.09.d/cds.lib
+        -HDLVAR ./xcelium.d/run.lnx8664.22.09.d/hdl.var
+        -XLNAME xrun
+        -XLVERSION TOOL:	xrun(64)	22.09-s003
+        -XLNAME ./xcelium.d/run.lnx8664.22.09.d/cadence-server.vit.ac.in_1244232
+    -CHECK_VERSION TOOL:	xrun(64)	22.09-s003
+    -LOG_FD 4
+    -LOG_FD_NAME xrun.log
+    -cmdnopsim
+    -runlock /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xcelium.d/run.lnx8664.22.09.d/.xmlib.lock
+    -runscratch /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/workspace/xcelium.d/run.lnx8664.22.09.d/cadence-server.vit.ac.in_1244232
+
+csi-xmsim - CSI: *F,INTERR: INTERNAL EXCEPTION
+Observed simulation time : 0 FS + 0
+-----------------------------------------------------------------
+The tool has encountered an unexpected condition and must exit.
+Contact Cadence Design Systems customer support about this
+problem and provide enough information to help us reproduce it,
+including the logfile that contains this error message.
+  TOOL:	xmsim(64)	22.09-s003
+  HOSTNAME: cadence-server.vit.ac.in
+  OPERATING SYSTEM: Linux 4.18.0-477.21.1.el8_8.x86_64 #1 SMP Thu Jul 20 08:38:27 EDT 2023 x86_64
+  MESSAGE: T(0): sv_seghandler - trapno -1 addr(0x61330ec)
+	Stream rts_xfer
+-----------------------------------------------------------------
+
+csi-xmsim - CSI: Cadence Support Investigation, recording details
+External Code in function: <unavailable> offset -65518
+External Code in function: <unavailable> offset -65536
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 25, position 18
+	Scope: top
+	Decompile: logic ser_tx
+	Source  : 	wire        ser_tx;
+	Position: 	                 ^
+Verilog Syntax Tree: logic type (VST_T_LOGIC) in module worklib.top:sv (VST)
+	Decompile: logic
+Verilog Syntax Tree: nonblocking assignment statement (VST_S_NONBLOCKING_ASSIGNMENT) in module worklib.simple_mem_axi_adapter:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/simple_mem_axi_adapter.sv, line 106, position 33
+	Scope: simple_mem_axi_adapter.AW
+	Decompile: 1
+	Source  :                 aw_complete_set <= 1;
+	Position:                                  ^
+Simulator Snap Shot: gd (SSS_GD) in snapshot worklib.top_tb:sv (SSS)
+Verilog Syntax Tree: overlay table (VST_OVERLAY_TABLE) in module worklib.top:sv (SIG) <0x71109c98>
+	Decompile: top
+Verilog Syntax Tree: module declaration (VST_D_MODULE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 1, position 9
+	Scope: top
+	Decompile: top
+	Source  : module top (
+	Position:          ^
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 3, position 22
+	Scope: top
+	Decompile: logic resetn
+	Source  :     input  logic resetn
+	Position:                       ^
+Intermediate File: string (IF_STRING) in module worklib.top:sv (VST)
+	Decompile: clk
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 2, position 19
+	Scope: top
+	Decompile: logic clk
+	Source  :     input  logic clk,
+	Position:                    ^
+Verilog Syntax Tree: instance declaration (VST_D_INSTANCE) in module worklib.top_tb:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/tb/top_tb.sv, line 21, position 10
+	Scope: top_tb
+	Decompile: dut
+	Source  :     top dut(
+	Position:           ^
+Intermediate File: string (IF_STRING) in module worklib.top_tb:sv (VST)
+	Decompile: top_tb
+External Code in function: <unavailable> offset -64666
+Intermediate File: string (IF_STRING) in module worklib.top:sv (VST)
+	Decompile: ser_tx
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.top:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/top.sv, line 7, position 29
+	Scope: top
+	Decompile: logic core_mem_valid
+	Source  :     wire        core_mem_valid;
+	Position:                              ^
+Verilog Syntax Tree: module declaration (VST_D_MODULE) in module worklib.top_tb:sv (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/tb/top_tb.sv, line 5, position 12
+	Scope: top_tb
+	Decompile: top_tb
+	Source  : module top_tb;
+	Position:             ^
+Simulator Snap Shot: top level instance (SSS_TLI) in snapshot worklib.top_tb:sv (SSS)
+Intermediate File: array of pointers (IF_PTRBLK) in snapshot worklib.top_tb:sv (SSS)
+Internal Code in function: nmpLibraryNTToIdent offset 128
+Simulator Snap Shot: root (SSS_ROOT) in snapshot worklib.top_tb:sv (SSS)
+Intermediate File: root (IF_ROOT) in snapshot worklib.top_tb:sv (SSS)
+Intermediate File: data block (IF_BLK) in snapshot worklib.top_tb:sv (SSS)
+Simulator Snap Shot: dynlib (SSS_DYNLIB) in snapshot worklib.top_tb:sv (SSS)
+External Code in function: <unavailable> offset 1875745
+Verilog Syntax Tree: wire declaration (VST_D_WIRE) in module worklib.picorv32:v (VST)
+	File: /home/userdata/23bvd0043/project/Tetrel-RISCV/SoC/sourcecode/rtl/picorv32.v, line 90, position 9
+	Scope: picorv32
+	Decompile: logic clk
+	Source  : 	input clk, resetn,
+	Position: 	        ^
+Verilog Syntax Tree: overlay table (VST_OVERLAY_TABLE) in module worklib.picorv32:v (SIG) <0x0ba81ac2>
+	Decompile: picorv32#(ENABLE_COUNTERS,ENABLE_COUNTERS64,ENABLE_REGS_16_31,ENABLE_REGS_DUALPORT,LATCHED_MEM_RDATA,TWO_STAGE_SHIFT,BARREL_SHIFTER,TWO_CYCLE_COMPARE,TWO_CYCLE_ALU,COMPRESSED_ISA,CATCH_MISALIGN,CATCH_ILLINSN,ENABLE_PCPI,ENABLE_MUL,ENABLE_FAST_MUL,ENABLE_D
+Simulator Snap Shot: stream cod (SSS_COD_STREAM) in snapshot worklib.top_tb:sv (SSS)
+External Code in function: <unavailable> offset -65529
+User Code in function: <unavailable> offset 41086154
+csi-xmsim - CSI: investigation complete took 0.011 secs, send this file to Cadence Support

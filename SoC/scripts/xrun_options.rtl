@@ -1,0 +1,14 @@
+-sv
+-v93
+-debug
+-gui
+-delay_trigger
+-timescale 1ns/1ps
++bus_conflict_off
+-define RTL
+-f ../sourcecode/dut_src_list.txt
+../sourcecode/tb/top_tb.sv
+-top top_tb
+
+# Optionally add a tcl script to run upon Xcelium invocation
+#-input ../scripts/simulation.tcl
