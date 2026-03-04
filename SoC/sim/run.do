@@ -4,8 +4,9 @@ vmap work work
 
 # Compile design RTL (adjust path if needed)
 # If you want compressed-isa defines like the Makefile, use +define+COMPRESSED_ISA
-vlog ../rtl/*.v
-vlog ../rtl/*.sv
+vlog ../sourcecode/rtl/*.v
+vlog ../sourcecode/rtl/*.sv
+vlog ../sourcecode/tb/*.sv
 
 # Launch simulation with accessibility for internal signals
 vsim -voptargs="+acc" work.top_tb 
