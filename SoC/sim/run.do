@@ -34,7 +34,6 @@ add wave sim:/top_tb/resetn
 
 add wave -divider "AXI - MEM Slave"
 add wave sim:/top_tb/dut/mem_axi/*
-add wave sim:/top_tb/dut/mem_adapter/read_pending
 
 add wave -divider "simple_mem"
 add wave sim:/top_tb/dut/mem/*
