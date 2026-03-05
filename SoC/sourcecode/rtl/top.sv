@@ -102,7 +102,7 @@ module top (
     );
 
     //simple memory AXI adapter
-    simple_mem_axi_adapter mem_adapter (
+    simplemem_axi_adapter mem_adapter (
         .clk        (clk),
         .resetn     (resetn),
 
@@ -120,7 +120,7 @@ module top (
     );
 
     //simple memory module
-    simple_mem #(
+    simplemem #(
         .PROGRAM_HEX("../hex/smoke_test.hex")
     ) mem (
         .clk        (clk),
