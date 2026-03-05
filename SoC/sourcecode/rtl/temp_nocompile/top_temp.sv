@@ -37,9 +37,7 @@ module top (
 
 //---------interface instantiations---------
     // AXI4-Lite interface signals
-    axi_interf picorv32_axi();
     axi_interf mem_axi();
-    axi_interf uart_axi();
 
 //---------instantiations---------
     // PicoRV32 core
@@ -71,34 +69,27 @@ module top (
 
         //AXI interface
             //Write Address Channel
-        .mem_axi_awvalid (picorv32_axi.awvalid),
-        .mem_axi_awready (picorv32_axi.awready),
-        .mem_axi_awaddr  (picorv32_axi.awaddr),
-        .mem_axi_awprot  (picorv32_axi.awprot),
+        .mem_axi_awvalid (mem_axi.awvalid),
+        .mem_axi_awready (mem_axi.awready),
+        .mem_axi_awaddr  (mem_axi.awaddr),
+        .mem_axi_awprot  (mem_axi.awprot),
             //Write Data Channel
-        .mem_axi_wvalid  (picorv32_axi.wvalid),
-        .mem_axi_wready  (picorv32_axi.wready),
-        .mem_axi_wdata   (picorv32_axi.wdata),
-        .mem_axi_wstrb   (picorv32_axi.wstrb),
+        .mem_axi_wvalid  (mem_axi.wvalid),
+        .mem_axi_wready  (mem_axi.wready),
+        .mem_axi_wdata   (mem_axi.wdata),
+        .mem_axi_wstrb   (mem_axi.wstrb),
             //Write Response Channel
-        .mem_axi_bvalid  (picorv32_axi.bvalid),
-        .mem_axi_bready  (picorv32_axi.bready),
+        .mem_axi_bvalid  (mem_axi.bvalid),
+        .mem_axi_bready  (mem_axi.bready),
             //Read Address Channel
-        .mem_axi_arvalid (picorv32_axi.arvalid),
-        .mem_axi_arready (picorv32_axi.arready),
-        .mem_axi_araddr  (picorv32_axi.araddr),
-        .mem_axi_arprot  (picorv32_axi.arprot),
+        .mem_axi_arvalid (mem_axi.arvalid),
+        .mem_axi_arready (mem_axi.arready),
+        .mem_axi_araddr  (mem_axi.araddr),
+        .mem_axi_arprot  (mem_axi.arprot),
             //Read Data Channel
-        .mem_axi_rvalid  (picorv32_axi.rvalid),
-        .mem_axi_rready  (picorv32_axi.rready),
-        .mem_axi_rdata   (picorv32_axi.rdata)
-    );
-
-    // AXI mux to interface with multiple slaves; i.e. axi interconnect
-    axi_mux mux (
-        .master_axi(picorv32_axi.master),
-        .slave0_axi(mem_axi.slave),
-        .slave1_axi(uart_axi.slave)
+        .mem_axi_rvalid  (mem_axi.rvalid),
+        .mem_axi_rready  (mem_axi.rready),
+        .mem_axi_rdata   (mem_axi.rdata)
     );
 
     //simple memory AXI adapter
@@ -121,7 +112,7 @@ module top (
 
     //simple memory module
     simplemem #(
-        .PROGRAM_HEX("../hex/uart_smoke_test.hex")
+        .PROGRAM_HEX("../hex/smoke_test.hex")
     ) mem (
         .clk        (clk),
         .resetn     (resetn),
@@ -134,48 +125,6 @@ module top (
         .mem_wdata  (memory_mem_wdata),
         .mem_wstrb  (memory_mem_wstrb),
         .mem_rdata  (memory_mem_rdata)
-    );
-
-    //uart AXI adapter
-    simpleuart_axi_adapter uart_adapter (
-        .clk        (clk),
-        .resetn     (resetn),
-
-        //AXI interface
-        .uart_axi(uart_axi.slave),
-
-        //simpleuart interface
-        .ser_tx(ser_tx),
-        .ser_rx(ser_rx),
-
-        .reg_div_we(reg_div_we),
-        .reg_div_di(reg_div_di),
-        .reg_div_do(reg_div_do),
-
-        .reg_dat_we(reg_dat_we),
-        .reg_dat_re(reg_dat_re),
-        .reg_dat_di(reg_dat_di),
-        .reg_dat_do(reg_dat_do),
-        .reg_dat_wait(reg_dat_wait)
-    );
-
-    //simpleuart module used in picorv32 repo
-    simpleuart uart (
-        .clk        (clk),
-        .resetn     (resetn),
-
-        .ser_tx(ser_tx),
-        .ser_rx(ser_rx),
-
-        .reg_div_we(reg_div_we),
-        .reg_div_di(reg_div_di),
-        .reg_div_do(reg_div_do),
-
-        .reg_dat_we(reg_dat_we),
-        .reg_dat_re(reg_dat_re),
-        .reg_dat_di(reg_dat_di),
-        .reg_dat_do(reg_dat_do),
-        .reg_dat_wait(reg_dat_wait)
     );
 
 endmodule

@@ -20,7 +20,7 @@ module simplemem_axi_adapter #(
 );
 
 	reg ack_rvalid;
-	reg xfer_done;
+	reg ack_bvalid;
 
 	//write logic
 	assign mem_axi.awready = mem_ready;
@@ -49,13 +49,27 @@ module simplemem_axi_adapter #(
 	assign mem_axi.rvalid = ack_rvalid;
 	assign mem_axi.rdata = mem_rdata;
 
+	assign mem_axi.bvalid = ack_bvalid;
+
 	always_ff @(posedge clk) begin
-		if (!resetn) begin 
+		if (!resetn) begin
 			ack_rvalid <= 0;
-		end else begin 
-			xfer_done <= mem_valid && mem_ready;
-			if (mem_axi.rvalid && mem_axi.rready) ack_rvalid <= 1;
-			if (xfer_done || !mem_ready) ack_rvalid <= 0;
+		end else begin
+			if (mem_ready && !mem_wstrb)   // memory just finished a read
+				ack_rvalid <= 1;
+			if (mem_axi.rvalid && mem_axi.rready)  // master consumed the data
+				ack_rvalid <= 0;
+		end
+	end
+
+	always_ff @(posedge clk) begin
+		if (!resetn) begin
+			ack_bvalid <= 0;
+		end else begin
+			if (mem_ready && |mem_wstrb)   // memory just finished a write
+				ack_bvalid <= 1;
+			if (mem_axi.bvalid && mem_axi.bready)  // master got the response
+				ack_bvalid <= 0;
 		end
 	end
 endmodule
