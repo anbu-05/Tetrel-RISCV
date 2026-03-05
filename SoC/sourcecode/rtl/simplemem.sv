@@ -1,4 +1,4 @@
-module simple_mem #(
+module simplemem #(
     parameter MEM_WORDS = 131072, //128KiB (MEM_WORDS * 4 bytes) (till address 0x00020000)
     parameter ROM_ORIGIN = 32'h00000000,
     parameter ROM_LENGTH = 32'h00010000, // 64 KiB
