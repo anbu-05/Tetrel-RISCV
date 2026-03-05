@@ -1,5 +1,3 @@
-// testbench for the first axi simpleuart adapter + simpleuart implementation
-
 `timescale 1 ns / 1 ps
 
 module top_tb;

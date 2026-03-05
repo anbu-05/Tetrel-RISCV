@@ -158,6 +158,10 @@ GPIO  : 0x00018100 – undefined
 * Registers are **word-addressable**
 * `DATA` supports byte writes (`sb`) for transmission
 
+> note on the uart baud rate:
+* with divider = 1, each UART bit is 1 clock cycle = 10ns, so `"Hi\n"` will transmit in about 300ns total. It'll work in simulation but obviously not with real hardware. 
+* When you move to real hardware you'll want to set the divider to `clk_freq / baud_rate` (e.g. `5208` for 50MHz / 9600 baud).
+
 ---
 
 ## Notes and Limitations
