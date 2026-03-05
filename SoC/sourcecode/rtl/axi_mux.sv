@@ -52,29 +52,29 @@ module axi_mux # (
     // Provide full defaults first (avoid latches)
     always_comb begin
         // default: slave0/1 signals not driven
-        slave0_axi.awvalid <= 1'b0; slave0_axi.awaddr <= 32'h0; slave0_axi.awprot <= 3'h0;
-        slave1_axi.awvalid <= 1'b0; slave1_axi.awaddr <= 32'h0; slave1_axi.awprot <= 3'h0;
+        slave0_axi.awvalid = 1'b0; slave0_axi.awaddr = 32'h0; slave0_axi.awprot = 3'h0;
+        slave1_axi.awvalid = 1'b0; slave1_axi.awaddr = 32'h0; slave1_axi.awprot = 3'h0;
 
-        slave0_axi.wvalid  <= 1'b0; slave0_axi.wdata  <= 32'h0; slave0_axi.wstrb  <= 4'h0;
-        slave1_axi.wvalid  <= 1'b0; slave1_axi.wdata  <= 32'h0; slave1_axi.wstrb  <= 4'h0;
+        slave0_axi.wvalid  = 1'b0; slave0_axi.wdata  = 32'h0; slave0_axi.wstrb  = 4'h0;
+        slave1_axi.wvalid  = 1'b0; slave1_axi.wdata  = 32'h0; slave1_axi.wstrb  = 4'h0;
 
-        slave0_axi.arvalid <= 1'b0; slave0_axi.araddr <= 32'h0; slave0_axi.arprot <= 3'h0;
-        slave1_axi.arvalid <= 1'b0; slave1_axi.araddr <= 32'h0; slave1_axi.arprot <= 3'h0;
+        slave0_axi.arvalid = 1'b0; slave0_axi.araddr = 32'h0; slave0_axi.arprot = 3'h0;
+        slave1_axi.arvalid = 1'b0; slave1_axi.araddr = 32'h0; slave1_axi.arprot = 3'h0;
 
-        slave0_axi.bready  <= 1'b0;
-        slave1_axi.bready  <= 1'b0;
+        slave0_axi.bready  = 1'b0;
+        slave1_axi.bready  = 1'b0;
 
-        slave0_axi.rready  <= 1'b0;
-        slave1_axi.rready  <= 1'b0;
+        slave0_axi.rready  = 1'b0;
+        slave1_axi.rready  = 1'b0;
 
         // master defaults (responses/ready)
-        master_axi.awready <= 1'b0;
-        master_axi.wready  <= 1'b0;
-        master_axi.bvalid  <= 1'b0;
+        master_axi.awready = 1'b0;
+        master_axi.wready  = 1'b0;
+        master_axi.bvalid  = 1'b0;
 
-        master_axi.arready <= 1'b0;
-        master_axi.rvalid  <= 1'b0;
-        master_axi.rdata   <= 32'h0;
+        master_axi.arready = 1'b0;
+        master_axi.rvalid  = 1'b0;
+        master_axi.rdata   = 32'h0;
 
         // ---------- AR channel ----------
         if (master_axi.arvalid) begin

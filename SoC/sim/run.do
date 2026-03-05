@@ -19,30 +19,35 @@ add wave sim:/top_tb/clk
 add wave sim:/top_tb/resetn
 
 # -------------------------------------------------------
-# AXI Routing Through MUX (optional)
-# -------------------------------------------------------
-
-#add wave -divider "AXI Mux Output → Slave1 (uart_axi)"
-#add wave sim:/top_tb/dut/uart_axi/*
-
-#add wave -divider "AXI Mux Output → Slave0 (mem_axi)"
-#add wave sim:/top_tb/dut/mem_axi/*
-
-# -------------------------------------------------------
 # AXI Interface Observability
 # -------------------------------------------------------
 
-add wave -divider "AXI - MEM Slave"
+add wave -divider "uart outputs"
+add wave sim:/top_tb/dut/uart/ser_tx
+add wave sim:/top_tb/dut/uart/ser_rx
+
+add wave -divider "PicoRV32"
+add wave sim:/top_tb/dut/core/mem_valid
+add wave sim:/top_tb/dut/core/mem_ready
+add wave sim:/top_tb/dut/core/mem_addr
+add wave sim:/top_tb/dut/core/mem_wdata
+add wave sim:/top_tb/dut/core/mem_wstrb
+add wave sim:/top_tb/dut/core/mem_rdata
+
+add wave -divider "AXI - core master"
+add wave sim:/top_tb/dut/picorv32_axi/*
+
+add wave -divider "AXI - mem slave"
 add wave sim:/top_tb/dut/mem_axi/*
 
 add wave -divider "simple_mem"
 add wave sim:/top_tb/dut/mem/*
 
-add wave -divider "AXI - PICORV32 Master"
-add wave sim:/top_tb/dut/picorv32_axi/*
-
-add wave -divider "AXI - UART Slave"
+add wave -divider "AXI - uart slave"
 add wave sim:/top_tb/dut/uart_axi/*
 
+add wave -divider "simpleuart"
+add wave sim:/top_tb/dut/uart/*
 
-run 500ns
+
+run 3us

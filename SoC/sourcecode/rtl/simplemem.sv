@@ -4,7 +4,7 @@ module simplemem #(
     parameter ROM_LENGTH = 32'h00010000, // 64 KiB
     parameter RAM_ORIGIN = 32'h00010000,
     parameter RAM_LENGTH = 32'h00008000, // 32 KiB
-    parameter string PROGRAM_HEX = "../hex/smoke_test.hex"
+    parameter string PROGRAM_HEX = "../../hex/smoke_test.hex"
 ) (
     input logic clk, resetn,
 
