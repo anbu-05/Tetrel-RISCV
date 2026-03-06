@@ -40,6 +40,7 @@ module top (
     axi_interf picorv32_axi();
     axi_interf mem_axi();
     axi_interf uart_axi();
+    axi_interf gpio_axi();
 
 //---------instantiations---------
     // PicoRV32 core
@@ -98,7 +99,8 @@ module top (
     axi_mux mux (
         .master_axi(picorv32_axi.master),
         .slave0_axi(mem_axi.slave),
-        .slave1_axi(uart_axi.slave)
+        .slave1_axi(uart_axi.slave),
+        .slave2_axi(gpio_axi.slave)
     );
 
     //simple memory AXI adapter
@@ -176,6 +178,14 @@ module top (
         .reg_dat_di(reg_dat_di),
         .reg_dat_do(reg_dat_do),
         .reg_dat_wait(reg_dat_wait)
+    );
+
+    //simplegpio module
+    simplegpio gpio (
+        .clk        (clk),
+        .resetn     (resetn),
+
+        .gpio_axi(gpio_axi.slave)
     );
 
 endmodule

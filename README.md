@@ -1,6 +1,6 @@
 # Tetrel-RISCV
 
-Tetrel-RISCV is an RV32IM SoC built around the `picorv32` core. The project focuses on clarity and correctness first, with simulation-driven development using QuestaSim.
+Tetrel-RISCV is an RV32IMC SoC built around the `picorv32` core. The project focuses on clarity and correctness first, with simulation-driven development using QuestaSim and Xcelium.
 
 ## Overview
 
@@ -11,33 +11,71 @@ Folder structure:
 ```
 /Tetrel-RISCV/
 ├─ SoC/
-│  ├─ hex/               # Hex files loaded into memory
-│  │  └─ prog/           # Assembly programs corresponding to hex files
-│  ├─ rtl/               # SoC RTL (core, bus, peripherals)
-│  ├─ tb/                # Testbench files
-│  └─ sim/               # Questa simulation setup (run.do, configs)
-├─ linker.ld             # Linker script
+│  ├─ firmware/          # C firmware for the SoC
+│  │  ├─ src/            # C source files
+│  │  ├─ asm/            # start.S (startup code)
+│  │  ├─ build/          # Intermediate files (.o, .elf)
+│  │  ├─ hex/            # Final .hex outputs loaded by simplemem
+│  │  ├─ linker.ld       # Linker script
+│  │  └─ Makefile        # Build system
+│  ├─ sourcecode/
+│  │  └─ rtl/            # SoC RTL (core, bus, peripherals)
+│  ├─ sim/               # Simulation setup (run.do, configs)
+│  └─ tb/                # Testbench files
 ├─ README.md
-└─ old/                  # Deprecated / archived work
+└─ SoC_progress/         # Progress log
 ```
 
-The SoC is simulated using Intel/Altera QuestaSim.
+---
+
+## Toolchain
+
+Install the RISC-V GCC toolchain:
+
+```bash
+sudo apt install gcc-riscv64-unknown-elf
+```
+
+- Compiler: `riscv64-unknown-elf-gcc`
+- Target arch: `RV32IMC` (`-march=rv32imc -mabi=ilp32`)
+
+### Building firmware
+
+```bash
+cd SoC/firmware
+make
+```
+
+This compiles your C program and produces a `.hex` file in `SoC/firmware/hex/`.
+
+### Manual compile commands
+
+```bash
+# Compile to ELF
+riscv64-unknown-elf-gcc -march=rv32imc -mabi=ilp32 -nostdlib \
+  -T linker.ld -o build/smoke_test.elf asm/start.S src/smoke_test.c
+
+# Convert ELF to HEX
+riscv64-unknown-elf-objcopy -O verilog --verilog-data-width=4 \
+  build/smoke_test.elf hex/smoke_test.hex && \
+awk '/^@/{print; next} {for(i=1;i<=NF;i++) print $i}' \
+  hex/smoke_test.hex > hex/smoke_test.hex.tmp && \
+mv hex/smoke_test.hex.tmp hex/smoke_test.hex
+```
 
 ---
 
 ## Tooling Notes
 
-Program assembly and verification are currently done using lightweight external tools:
+For low-level validation and experimentation:
 
-- [RISC-V Online Assembler -racerxdl](https://riscvasm.lucasteske.dev/#)
+- [RISC-V Online Assembler - racerxdl](https://riscvasm.lucasteske.dev/#)
     - [github repo](https://github.com/racerxdl/riscv-online-asm)
-- [RISC-V Instruction Encoder / Decoder -LupLab](https://luplab.gitlab.io/rvcodecjs/#q=40628433&abi=false&isa=AUTO)
-- [RISC-V ISA Reference -lhtin](https://lhtin.github.io/01world/app/riscv-isa/?xlen=32)
+- [RISC-V Instruction Encoder / Decoder - LupLab](https://luplab.gitlab.io/rvcodecjs/#q=40628433&abi=false&isa=AUTO)
+- [RISC-V ISA Reference - lhtin](https://lhtin.github.io/01world/app/riscv-isa/?xlen=32)
     - [github repo](https://github.com/lhtin/01world/tree/main/app/riscv-isa-dev)
 
-These tools are used for validation and experimentation during development. Generated `.hex` files are checked into the repository to ensure reproducible simulation results.
-
-you can find a progress log in [/SoC_progress/progress/Progress.md](https://github.com/anbu-05/Tetrel-RISCV/blob/main/SoC_progress/progress/Progress.md)
+You can find a progress log in [/SoC_progress/progress/Progress.md](https://github.com/anbu-05/Tetrel-RISCV/blob/main/SoC_progress/progress/Progress.md)
 
 ---
 
@@ -62,13 +100,15 @@ you can find a progress log in [/SoC_progress/progress/Progress.md](https://gith
 3. Place your program hex file in:
 
    ```
-   Tetrel-RISCV/SoC/hex/
+   Tetrel-RISCV/SoC/firmware/hex/
    ```
 
-4. The memory is initialized in `simple_mem.sv`. Update the hex filename if required:
+4. The hex filename is set in `top.sv`:
 
-   ```verilog
-   initial $readmemh("../hex/smoke_test.hex", memory);
+   ```systemverilog
+   simplemem #(
+       .PROGRAM_HEX("../firmware/hex/smoke_test.hex")
+   ) mem ( ... );
    ```
 
 5. Launch QuestaSim:
@@ -95,78 +135,84 @@ you can find a progress log in [/SoC_progress/progress/Progress.md](https://gith
    do run.do
    ```
 
-The SoC should now reset, execute the program, and expose activity on the bus, memory, and peripherals (UART, etc.).
-
----
-
-## Writing and Running Programs
-
-Assembly source files live in:
-
-```
-SoC/hex/prog/
-```
-
-Generated `.hex` files are stored in:
-
-```
-SoC/hex/
-```
-
-Hex files are checked into the repo to ensure deterministic simulation results.
-
-### Notes on Writing Assembly
-
-* Instructions are **word-aligned** (4 bytes)
-* Program execution starts at address `0x00000000`
-* Branch and jump immediates follow standard RISC-V encoding rules
-* `lui` loads the immediate into bits `[31:12]` (`imm << 12`)
-
-Keeping track of instruction addresses in comments is highly recommended during development:
-
-```assembly
-addi x1, x0, 10      ; addr = 0
-addi x2, x0, 15      ; addr = 4
-add  x3, x1, x2      ; addr = 8
-sw   x3, 0(x0)       ; addr = 12
-```
-
-This makes waveform-level debugging much easier.
-
 ---
 
 ## Memory Map
 
 ```
-ROM   : 0x00000000 – 0x0000FFFF  (64 KiB)
-RAM   : 0x00010000 – 0x00017FFF  (32 KiB)
-UART  : 0x00018000 – 0x00018008
-GPIO  : 0x00018100 – undefined
+ROM   : 0x00000000 – 0x0000FFFF  (64 KiB)  program code
+RAM   : 0x00010000 – 0x00017FFF  (32 KiB)  stack and variables
+UART  : 0x00018000 – 0x0001800B  (12 B)    serial UART
+GPIO  : 0x00020000 – 0x00020007  (8 B)     general purpose I/O
 ```
 
-> note: Instruction fetch currently comes from RAM; ROM is used as general data storage.
+Program execution starts at `0x00000000`.
 
-### UART Registers
+---
 
+## UART Registers (`0x00018000`)
+
+| Offset | Name   | Description                                      |
+|--------|--------|--------------------------------------------------|
+| `+0x0` | DIV    | Baud rate divisor. `divisor = clk_freq / baud`  |
+| `+0x4` | DAT    | Write: TX byte. Read: RX byte                   |
+| `+0x8` | STATUS | Bit 0 = TX busy (1 = busy, wait before writing) |
+
+**Baud rate examples:**
+
+| Clock    | Baud    | Divisor |
+|----------|---------|---------|
+| 50 MHz   | 115200  | 434     |
+| 50 MHz   | 9600    | 5208    |
+| 1 MHz    | 115200  | 8       |
+
+> In simulation you can set `DIV = 1` so each UART bit takes 1 clock cycle. This makes UART output fast to simulate but won't work on real hardware.
+
+---
+
+## GPIO Registers (`0x00020000`)
+
+| Offset | Name | Description                                         |
+|--------|------|-----------------------------------------------------|
+| `+0x0` | DATA | Write: output pin values. Read: current pin state   |
+| `+0x4` | DIR  | Pin direction per bit. `1` = output, `0` = input    |
+
+**Notes:**
+- On reset all pins default to input (`DIR = 0`)
+- Always set `DIR` before writing `DATA`
+- Reading `DATA` on an output pin returns the value you wrote
+- Reading `DATA` on an input pin returns the value on the physical pin
+
+---
+
+## Writing Firmware in C
+
+A minimal C program for this SoC needs two files alongside your `.c` source:
+
+**`asm/start.S`** — runs before `main()`, sets up the stack:
+```asm
+.section .text
+.global _start
+
+_start:
+    la sp, _stack_top
+    call main
+
+loop:
+    j loop
 ```
-0x00 : FLAGS
-       [0] TX_READY
-0x04 : CLKDIV (32-bit)
-0x08 : DATA   (32-bit)
+
+**`linker.ld`** — tells the linker where to place code and data in memory:
 ```
-
-* Registers are **word-addressable**
-* `DATA` supports byte writes (`sb`) for transmission
-
-> note on the uart baud rate:
-* with divider = 1, each UART bit is 1 clock cycle = 10ns, so `"Hi\n"` will transmit in about 300ns total. It'll work in simulation but obviously not with real hardware. 
-* When you move to real hardware you'll want to set the divider to `clk_freq / baud_rate` (e.g. `5208` for 50MHz / 9600 baud).
+ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 64K   ← code
+RAM (rwx) : ORIGIN = 0x00010000, LENGTH = 32K   ← stack, variables
+```
 
 ---
 
 ## Notes and Limitations
 
-* No interrupt support yet
-* No CSR handling
-* Peripheral set is intentionally minimal
-* Design favors readability and explicit structure over performance optimizations
+- No interrupt support yet
+- No CSR handling
+- Peripheral set is intentionally minimal
+- Design favors readability and explicit structure over performance
