@@ -140,10 +140,11 @@ You can find a progress log in [/SoC_progress/progress/Progress.md](https://gith
 ## Memory Map
 
 ```
-ROM   : 0x00000000 – 0x0000FFFF  (64 KiB)  program code
-RAM   : 0x00010000 – 0x00017FFF  (32 KiB)  stack and variables
-UART  : 0x00018000 – 0x0001800B  (12 B)    serial UART
-GPIO  : 0x00020000 – 0x00020007  (8 B)     general purpose I/O
+ROM   : 0x00000000 – 0x0000FFFF  (64 KiB)        program code
+RAM   : 0x00010000 – 0x00017F7F  (32 KiB - 128 B) stack and variables
+SIG   : 0x00017F80 – 0x00017FFF  (128 B)          signature registers (reserved)
+UART  : 0x00018000 – 0x0001800B  (12 B)           serial UART
+GPIO  : 0x00020000 – 0x00020007  (8 B)            general purpose I/O
 ```
 
 Program execution starts at `0x00000000`.
@@ -152,36 +153,111 @@ Program execution starts at `0x00000000`.
 
 ## UART Registers (`0x00018000`)
 
-| Offset | Name   | Description                                      |
-|--------|--------|--------------------------------------------------|
-| `+0x0` | DIV    | Baud rate divisor. `divisor = clk_freq / baud`  |
-| `+0x4` | DAT    | Write: TX byte. Read: RX byte                   |
-| `+0x8` | STATUS | Bit 0 = TX busy (1 = busy, wait before writing) |
+| Offset | Name   | Description                                     |
+|--------|--------|-------------------------------------------------|
+| `+0x0` | STATUS | Bit 0 = TX ready (1 = ready, 0 = busy)         |
+| `+0x4` | DIV    | Baud rate divisor. `divisor = clk_freq / baud` |
+| `+0x8` | DAT    | Write: TX byte. Read: RX byte                  |
 
 **Baud rate examples:**
 
-| Clock    | Baud    | Divisor |
-|----------|---------|---------|
-| 50 MHz   | 115200  | 434     |
-| 50 MHz   | 9600    | 5208    |
-| 1 MHz    | 115200  | 8       |
+| Clock  | Baud   | Divisor |
+|--------|--------|---------|
+| 50 MHz | 115200 | 434     |
+| 50 MHz | 9600   | 5208    |
+| 1 MHz  | 115200 | 8       |
 
-> In simulation you can set `DIV = 1` so each UART bit takes 1 clock cycle. This makes UART output fast to simulate but won't work on real hardware.
+> In simulation set `DIV = 1` so each UART bit takes 1 clock cycle. This is fast to simulate but won't work on real hardware.
 
 ---
 
 ## GPIO Registers (`0x00020000`)
 
-| Offset | Name | Description                                         |
-|--------|------|-----------------------------------------------------|
-| `+0x0` | DATA | Write: output pin values. Read: current pin state   |
-| `+0x4` | DIR  | Pin direction per bit. `1` = output, `0` = input    |
+| Offset | Name | Description                                       |
+|--------|------|---------------------------------------------------|
+| `+0x0` | DATA | Write: output pin values. Read: current pin state |
+| `+0x4` | DIR  | Pin direction per bit. `1` = output, `0` = input  |
 
 **Notes:**
 - On reset all pins default to input (`DIR = 0`)
 - Always set `DIR` before writing `DATA`
 - Reading `DATA` on an output pin returns the value you wrote
 - Reading `DATA` on an input pin returns the value on the physical pin
+
+---
+
+## Signature Registers
+
+The top 128 bytes of RAM (`0x00017F80 – 0x00017FFF`) are reserved as 32 signature registers. These are used by C firmware to communicate test results to the testbench without needing UART or any other peripheral.
+
+The linker script sets `_stack_top = 0x00017F80` so the stack never grows into this region.
+
+### How it works
+
+- The C program writes to signature slots as tests pass or fail.
+- The testbench watches for **slot 31** (`SIG_DONE`) to be written, then reads all 32 slots directly from memory and prints results.
+- The testbench is completely generic — it knows nothing about what each slot means. Slot meanings are defined only in the C program.
+- If the test does not complete within the timeout, the testbench prints whatever has been written so far and reports `TIMEOUT`.
+
+### Slot layout
+
+| Slot | Address      | Notes            |
+|------|--------------|------------------|
+| 0    | `0x00017F80` | general purpose  |
+| 1    | `0x00017F84` | general purpose  |
+| …    | …            | …                |
+| 30   | `0x00017FF8` | general purpose  |
+| 31   | `0x00017FFC` | `SIG_DONE` only  |
+
+Slot 31 is reserved. Writing `0xDEADBEEF` to it tells the testbench the test is complete.
+
+### Value conventions
+
+| Value        | Meaning                         |
+|--------------|---------------------------------|
+| `0x00000000` | UNUSED — slot was never written |
+| `0xA0xxxxxx` | PASS — upper nibble is `0xA`    |
+| `0xBADxxxxx` | FAIL — upper 12 bits are `0xBAD`|
+| `0xDEADBEEF` | DONE — slot 31 only             |
+
+### Using signatures in C
+
+Include `signatures.h` from `firmware/src/`:
+
+```c
+#include "signatures.h"
+
+// Pass: write any value with upper nibble 0xA
+SIG(0) = EXP_SIG(0xADD);   // tag is any 28-bit value you choose
+
+// Fail: write a BAD value
+SIG(0) = BAD_SIG(0);        // convention: pass the slot number
+
+// Always end with this
+SIG_DONE = DONE_VAL;
+```
+
+**Macros in `signatures.h`:**
+
+| Macro          | Value                          |
+|----------------|--------------------------------|
+| `SIG(n)`       | pointer to slot n              |
+| `SIG_DONE`     | pointer to slot 31             |
+| `EXP_SIG(tag)` | `0xA0000000 \| tag`            |
+| `BAD_SIG(n)`   | `0xBAD00000 \| n`              |
+| `DONE_VAL`     | `0xDEADBEEF`                   |
+
+### Testbench output
+
+```
+---- Signature Results ----
+  SIG[00] PASS  (0xa0000add)
+  SIG[01] PASS  (0xa00000a1)
+  SIG[02] UNUSED
+  ...
+  SIG[31] DONE  (0xDEADBEEF)
+---------------------------
+```
 
 ---
 
@@ -204,9 +280,11 @@ loop:
 
 **`linker.ld`** — tells the linker where to place code and data in memory:
 ```
-ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 64K   ← code
-RAM (rwx) : ORIGIN = 0x00010000, LENGTH = 32K   ← stack, variables
+ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 64K   ← code goes here
+RAM (rwx) : ORIGIN = 0x00010000, LENGTH = 32K   ← stack and variables
 ```
+
+`_stack_top` is set to `ORIGIN(RAM) + LENGTH(RAM) - 128` to keep the stack out of the signature region.
 
 ---
 

@@ -6,3 +6,6 @@ sim/*
 
 # (optional) keep the folder even when empty
 !sim/.gitkeep
+
+# ignore all hidden files (like .DS_Store, .vscode/, etc.)
+.* 

@@ -44,7 +44,9 @@ module top (
 
 //---------instantiations---------
     // PicoRV32 core
-    picorv32 core (
+    picorv32 #(
+        .ENABLE_MUL(1)
+    ) core (
         .clk        (clk),
         .resetn     (resetn),
         .mem_valid  (core_mem_valid),
@@ -123,7 +125,7 @@ module top (
 
     //simple memory module
     simplemem #(
-        .PROGRAM_HEX("../hex/uart_smoke_test.hex")
+        .PROGRAM_HEX("../firmware/hex/smoke_test.hex")
     ) mem (
         .clk        (clk),
         .resetn     (resetn),
@@ -182,10 +184,14 @@ module top (
 
     //simplegpio module
     simplegpio gpio (
-        .clk        (clk),
-        .resetn     (resetn),
+        .clk      (clk),
+        .resetn   (resetn),
 
-        .gpio_axi(gpio_axi.slave)
+        .gpio_axi (gpio_axi.slave),
+        
+        .gpio_in  (32'b0),    // tie to 0 for now, no physical pins in sim
+        .gpio_out (),         // leave unconnected, we don't need it in sim
+        .gpio_oe  ()          // leave unconnected
     );
 
 endmodule

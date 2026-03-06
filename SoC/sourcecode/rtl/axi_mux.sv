@@ -4,7 +4,7 @@ module axi_mux # (
     parameter RAM_ORIGIN = 32'h00010000,
     parameter RAM_LENGTH = 32'h00008000, // 32 KiB
     parameter SLAVE1_REG_ORIGIN = 32'h00018000,
-    parameter SLAVE1_REG_LENGTH = 32'h0000000c
+    parameter SLAVE1_REG_LENGTH = 32'h0000000c,
     parameter SLAVE2_REG_ORIGIN = 32'h00020000,
     parameter SLAVE2_REG_LENGTH = 32'h00000008
 )(
