@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PicoRV32 SoC Architecture</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    color: #1a1a1a;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box {
+    border: 1.5px solid #333;
+    border-radius: 4px;
+    padding: 10px 20px;
+    text-align: center;
+    background: #f5f5f5;
+  }
+
+  .box .label {
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  .box .sub {
+    font-size: 0.68rem;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  .cpu-box    { width: 200px; background: #e8f4fb; border-color: #2c7bb6; }
+  .adapt-box  { width: 240px; background: #f0f0f0; border-color: #555; }
+  .ic-box     { width: 300px; background: #f5f0ff; border-color: #7c3aed; }
+  .mem-a-box  { width: 165px; background: #f0faf0; border-color: #2e7d32; }
+  .uart-a-box { width: 165px; background: #fff5f5; border-color: #c62828; }
+  .gpio-box   { width: 165px; background: #e8f4fb; border-color: #0277bd; }
+  .smem-box   { width: 165px; background: #f0faf0; border-color: #2e7d32; }
+  .uart-box   { width: 165px; background: #fff5f5; border-color: #c62828; }
+
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bus-label {
+    font-size: 0.62rem;
+    color: #444;
+    background: #fff;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    padding: 1px 8px;
+    margin-bottom: 2px;
+  }
+
+  .line-v {
+    width: 1.5px;
+    height: 28px;
+    background: #555;
+  }
+
+  .arrowhead {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #555;
+  }
+
+  .fanout {
+    position: relative;
+    width: 500px;
+    height: 24px;
+  }
+
+  .fanout .h-bar {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 360px;
+    height: 1.5px;
+    background: #555;
+  }
+
+  .fanout .tick {
+    position: absolute;
+    top: 0;
+    width: 1.5px;
+    height: 24px;
+    background: #555;
+  }
+
+  .slave-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .slave-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .port-label {
+    font-size: 0.62rem;
+    color: #666;
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<h1>PicoRV32 SoC Architecture</h1>
+<p class="subtitle">AXI4-Lite Interconnect with Memory, UART, and GPIO Peripherals</p>
+
+<div class="diagram">
+
+  <div class="box cpu-box">
+    <div class="label">PicoRV32</div>
+    <div class="sub">RISC-V CPU Core</div>
+  </div>
+
+  <div class="arrow">
+    <div class="line-v"></div>
+    <div class="bus-label">Native Memory Bus</div>
+    <div class="line-v" style="height:6px;"></div>
+    <div class="arrowhead"></div>
+  </div>
+
+  <div class="box adapt-box">
+    <div class="label">AXI Adapter</div>
+    <div class="sub">mem → AXI4-Lite</div>
+  </div>
+
+  <div class="arrow">
+    <div class="line-v"></div>
+    <div class="bus-label">AXI4-Lite</div>
+    <div class="line-v" style="height:6px;"></div>
+    <div class="arrowhead"></div>
+  </div>
+
+  <div class="box ic-box">
+    <div class="label">AXI4-Lite Interconnect</div>
+    <div class="sub">Address Decode &amp; Routing</div>
+  </div>
+
+  <div class="fanout">
+    <div class="h-bar"></div>
+    <div class="tick" style="left: calc(50% - 180px);"></div>
+    <div class="tick" style="left: calc(50% - 0.75px);"></div>
+    <div class="tick" style="left: calc(50% + 180px);"></div>
+  </div>
+
+  <div class="slave-row">
+
+    <!-- S0: Memory -->
+    <div class="slave-col">
+      <div class="port-label">S0</div>
+      <div class="arrow">
+        <div class="line-v" style="height:6px;"></div>
+        <div class="bus-label">AXI4-Lite</div>
+        <div class="line-v" style="height:6px;"></div>
+        <div class="arrowhead"></div>
+      </div>
+      <div class="box mem-a-box" style="margin-top:4px;">
+        <div class="label" style="font-size:0.78rem;">mem_axi_adapter</div>
+        <div class="sub">AXI → mem bus</div>
+      </div>
+      <div class="arrow">
+        <div class="line-v" style="height:6px;"></div>
+        <div class="bus-label">Native Memory Bus</div>
+        <div class="line-v" style="height:6px;"></div>
+        <div class="arrowhead"></div>
+      </div>
+      <div class="box smem-box">
+        <div class="label">SimpleMem</div>
+        <div class="sub">Synchronous RAM</div>
+      </div>
+    </div>
+
+    <!-- S1: UART -->
+    <div class="slave-col">
+      <div class="port-label">S1</div>
+      <div class="arrow">
+        <div class="line-v" style="height:6px;"></div>
+        <div class="bus-label">AXI4-Lite</div>
+        <div class="line-v" style="height:6px;"></div>
+        <div class="arrowhead"></div>
+      </div>
+      <div class="box uart-a-box" style="margin-top:4px;">
+        <div class="label" style="font-size:0.78rem;">uart_axi_adapter</div>
+        <div class="sub">AXI → UART regs</div>
+      </div>
+      <div class="arrow">
+        <div class="line-v" style="height:6px;"></div>
+        <div class="bus-label">Memory-Mapped Registers</div>
+        <div class="line-v" style="height:6px;"></div>
+        <div class="arrowhead"></div>
+      </div>
+      <div class="box uart-box">
+        <div class="label">SimpleUART</div>
+        <div class="sub">Serial Interface</div>
+      </div>
+    </div>
+
+    <!-- S2: GPIO -->
+    <div class="slave-col">
+      <div class="port-label">S2</div>
+      <div class="arrow">
+        <div class="line-v" style="height:6px;"></div>
+        <div class="bus-label">AXI4-Lite</div>
+        <div class="line-v" style="height:6px;"></div>
+        <div class="bus-label">Memory-Mapped Registers</div>
+        <div class="line-v" style="height:6px;"></div>
+        <div class="arrowhead"></div>
+      </div>
+      <div class="box gpio-box" style="margin-top:4px;">
+        <div class="label">SimpleGPIO</div>
+        <div class="sub">Native AXI4-Lite slave</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
