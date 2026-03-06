@@ -5,6 +5,7 @@ Tetrel-RISCV is an RV32IMC SoC built around the `picorv32` core. The project foc
 ## Overview
 
 [architecture diagram](attachments/soc_diagram.html)
+
 ![architecture diagram](attachments/image.png)
 
 Main directory: `/Tetrel-RISCV/`
