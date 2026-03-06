@@ -49,5 +49,11 @@ add wave sim:/top_tb/dut/uart_axi/*
 add wave -divider "simpleuart"
 add wave sim:/top_tb/dut/uart/*
 
+add wave -divider "AXI - gpio slave"
+add wave sim:/top_tb/dut/gpio_axi/*
 
-run 3us
+add wave -divider "simplegpio"
+add wave sim:/top_tb/dut/gpio/*
+
+
+run 10ms

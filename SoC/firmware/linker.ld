@@ -6,26 +6,12 @@ MEMORY
 
 SECTIONS
 {
-    /* code goes into ROM */
-    .text : {
-        *(.text*)
-    } > ROM
+    .text   : { *(.text*)   } > ROM
+    .rodata : { *(.rodata*) } > ROM
+    .data   : { *(.data*)   } > RAM
+    .bss    : { *(.bss*)    } > RAM
 
-    /* read-only data (constants) goes into ROM */
-    .rodata : {
-        *(.rodata*)
-    } > ROM
-
-    /* variables go into RAM */
-    .data : {
-        *(.data*)
-    } > RAM
-
-    /* zero-initialized variables go into RAM */
-    .bss : {
-        *(.bss*)
-    } > RAM
-
-    /* stack starts at end of RAM */
-    _stack_top = ORIGIN(RAM) + LENGTH(RAM);
+    /* Top 128 bytes of RAM reserved for signature registers.
+       Stack must not grow into 0x00017F80 - 0x00017FFF. */
+    _stack_top = ORIGIN(RAM) + LENGTH(RAM) - 128;
 }
