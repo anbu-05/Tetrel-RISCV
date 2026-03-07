@@ -23,9 +23,9 @@ Folder structure:
 │  │  ├─ linker.ld       # Linker script
 │  │  └─ Makefile        # Build system
 │  ├─ sourcecode/
-│  │  └─ rtl/            # SoC RTL (core, bus, peripherals)
-│  ├─ sim/               # Simulation setup (run.do, configs)
-│  └─ tb/                # Testbench files
+│  │  ├─ rtl/            # SoC RTL (core, bus, peripherals)
+|  |  └─ tb/             # Testbench files
+│  └─ sim/               # Simulation setup (run.do, configs)               
 ├─ README.md
 └─ SoC_progress/         # Progress log
 ```
