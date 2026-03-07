@@ -7,14 +7,14 @@ module axi_interconnect # (
     parameter SLAVE1_ORIGIN = 32'h00018000,
     parameter SLAVE1_LENGTH = 32'h0000000c,
     parameter SLAVE2_ORIGIN = 32'h00020000,
-    parameter SLAVE2_LENGTH = 32'h00000008
+    parameter SLAVE2_LENGTH = 32'h00000008,
     parameter SLAVE3_ORIGIN = 32'h00030000,
     parameter SLAVE3_LENGTH = 32'h00000008
 )(
     axi_interf master_axi,
     axi_interf slave0_axi,
     axi_interf slave1_axi,
-    axi_interf slave2_axi
+    axi_interf slave2_axi,
     axi_interf slave3_axi
 );
 

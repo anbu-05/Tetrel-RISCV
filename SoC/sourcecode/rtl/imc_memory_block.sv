@@ -25,30 +25,10 @@
 
 module imc_memory_block (
     input  logic clk,
-    input  logic rst,
+    input  logic reset,
 
     // ── AXI4-Lite slave — core talks to peripheral through here ──────────────
-    input  logic [31:0] s_axi_awaddr,
-    input  logic        s_axi_awvalid,
-    output logic        s_axi_awready,
-
-    input  logic [31:0] s_axi_wdata,
-    input  logic [3:0]  s_axi_wstrb,
-    input  logic        s_axi_wvalid,
-    output logic        s_axi_wready,
-
-    output logic [1:0]  s_axi_bresp,
-    output logic        s_axi_bvalid,
-    input  logic        s_axi_bready,
-
-    input  logic [31:0] s_axi_araddr,
-    input  logic        s_axi_arvalid,
-    output logic        s_axi_arready,
-
-    output logic [31:0] s_axi_rdata,
-    output logic [1:0]  s_axi_rresp,
-    output logic        s_axi_rvalid,
-    input  logic        s_axi_rready,
+    axi_interf imc_axi,
 
     // ── DMA interface — peripheral orchestrates, DMA executes ────────────────
     output logic        dma_trig_in,    // tell DMA: load next input row → ReRAM
@@ -88,23 +68,27 @@ module imc_memory_block (
         .rst              (rst),
 
         // AXI4-Lite
-        .s_axi_awaddr     (s_axi_awaddr),
-        .s_axi_awvalid    (s_axi_awvalid),
-        .s_axi_awready    (s_axi_awready),
-        .s_axi_wdata      (s_axi_wdata),
-        .s_axi_wstrb      (s_axi_wstrb),
-        .s_axi_wvalid     (s_axi_wvalid),
-        .s_axi_wready     (s_axi_wready),
-        .s_axi_bresp      (s_axi_bresp),
-        .s_axi_bvalid     (s_axi_bvalid),
-        .s_axi_bready     (s_axi_bready),
-        .s_axi_araddr     (s_axi_araddr),
-        .s_axi_arvalid    (s_axi_arvalid),
-        .s_axi_arready    (s_axi_arready),
-        .s_axi_rdata      (s_axi_rdata),
-        .s_axi_rresp      (s_axi_rresp),
-        .s_axi_rvalid     (s_axi_rvalid),
-        .s_axi_rready     (s_axi_rready),
+        .s_axi_awaddr     (imc_axi.awaddr),
+        .s_axi_awvalid    (imc_axi.awvalid),
+        .s_axi_awready    (imc_axi.awready),
+
+        .s_axi_wdata      (imc_axi.wdata),
+        .s_axi_wstrb      (imc_axi.wstrb),
+        .s_axi_wvalid     (imc_axi.wvalid),
+        .s_axi_wready     (imc_axi.wready),
+
+        .s_axi_bresp      (imc_axi.bresp),
+        .s_axi_bvalid     (imc_axi.bvalid),
+        .s_axi_bready     (imc_axi.bready),
+
+        .s_axi_araddr     (imc_axi.araddr),
+        .s_axi_arvalid    (imc_axi.arvalid),
+        .s_axi_arready    (imc_axi.arready),
+
+        .s_axi_rdata      (imc_axi.rdata),
+        .s_axi_rresp      (imc_axi.rresp),
+        .s_axi_rvalid     (imc_axi.rvalid),
+        .s_axi_rready     (imc_axi.rready),
 
         // ReRAM control
         .reram_mode       (reram_mode),
@@ -133,23 +117,6 @@ module imc_memory_block (
         .input_vec        (reram_input_vec),
         .output_vec       (reram_output_vec),
         .done             (reram_done)
-    );
-
-    // ── SRAM Block ────────────────────────────────────────────────────────────
-    sram_block u_sram (
-        .clk              (clk),
-
-        // Port A — DMA owns this
-        .a_addr           (dma_sram_addr),
-        .a_wdata          (dma_sram_wdata),
-        .a_we             (dma_sram_we),
-        .a_rdata          (dma_sram_rdata),
-
-        // Port B — unused for now, tied off
-        .b_addr           (15'b0),
-        .b_wdata          (32'b0),
-        .b_we             (1'b0),
-        .b_rdata          ()       // left unconnected
     );
 
 endmodule

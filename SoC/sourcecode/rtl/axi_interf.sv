@@ -13,6 +13,7 @@ interface axi_interf;
 
 	logic        bvalid;
 	logic        bready;
+    logic [ 1:0] bresp;
 
 	logic        arvalid;
 	logic        arready;
@@ -22,6 +23,7 @@ interface axi_interf;
 	logic        rvalid;
 	logic        rready;
 	logic [31:0] rdata;
+    logic [31:0] rresp;
 
     modport master (
         // AXI4-lite master memory interface
@@ -38,6 +40,7 @@ interface axi_interf;
 
         input   bvalid,
         output  bready,
+        input   bresp,
 
         output  arvalid,
         input   arready,
@@ -46,7 +49,8 @@ interface axi_interf;
 
         input   rvalid,
         output  rready,
-        input   rdata
+        input   rdata,
+        input   rresp
     );
 
     modport slave (
@@ -64,6 +68,7 @@ interface axi_interf;
 
         output   bvalid,
         input    bready,
+        output   bresp,
 
         input    arvalid,
         output   arready,
@@ -72,6 +77,7 @@ interface axi_interf;
 
         output   rvalid,
         input    rready,
-        output   rdata
+        output   rdata,
+        output   rresp
     );
 endinterface //axi_interf
