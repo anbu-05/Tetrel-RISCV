@@ -3,12 +3,14 @@ OBJCOPY = riscv64-unknown-elf-objcopy
 
 CFLAGS = -march=rv32im -mabi=ilp32 -nostdlib -I src
 
-SRC    = src/smoke_test.c
+FILE   ?= smoke_test
+
+SRC    = src/$(FILE).c
 ASM    = asm/start.s
 LINKER = linker.ld
 
-ELF    = build/smoke_test.elf
-HEX    = hex/smoke_test.hex
+ELF    = build/$(FILE).elf
+HEX    = hex/$(FILE).hex
 
 all: $(HEX)
 
