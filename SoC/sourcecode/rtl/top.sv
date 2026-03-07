@@ -46,7 +46,7 @@ module top (
 //---------instantiations---------
     // PicoRV32 core
     picorv32 #(
-        .ENABLE_MUL(1)
+        .ENABLE_FAST_MUL(1)
     ) core (
         .clk        (clk),
         .resetn     (resetn),
@@ -107,7 +107,7 @@ module top (
         .SLAVE2_ORIGIN(32'h00020000),
         .SLAVE2_LENGTH(32'h00000008),
         .SLAVE3_ORIGIN(32'h00030000),
-        .SLAVE3_LENGTH(32'h00000032)
+        .SLAVE3_LENGTH(32'h00020040)
     ) mux (
         .master_axi(picorv32_axi.master),
         .slave0_axi(mem_axi.slave),
@@ -136,7 +136,7 @@ module top (
 
     //simple memory module
     simplemem #(
-        .PROGRAM_HEX("../firmware/hex/smoke_test.hex")
+        .PROGRAM_HEX("../firmware/hex/imc_verify.hex")
     ) mem (
         .clk        (clk),
         .resetn     (resetn),

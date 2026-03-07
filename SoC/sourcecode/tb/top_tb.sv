@@ -30,7 +30,7 @@ module top_tb;
     // Trigger when SIG_DONE (slot 31) is written
     always @(posedge clk) begin
         if (mem_valid && mem_ready && (mem_wstrb != 0) && (mem_addr == 32'h00017FFC)) begin
-            $display("[%0t] SIG_DONE written — test completed normally", $time);
+            $display("[%0t] SIG_DONE written - test completed normally", $time);
             check_signatures();
         end
     end
@@ -38,7 +38,7 @@ module top_tb;
     // Timeout — prints whatever was written so far
     initial begin
         #10_000_000; // 10ms
-        $display("[%0t] TIMEOUT — test did not complete. Partial results:", $time);
+        $display("[%0t] TIMEOUT - test did not complete. Partial results:", $time);
         check_signatures();
     end
 
