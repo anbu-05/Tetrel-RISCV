@@ -8,20 +8,25 @@ module axi_interconnect # (
     parameter SLAVE1_LENGTH = 32'h0000000c,
     parameter SLAVE2_ORIGIN = 32'h00020000,
     parameter SLAVE2_LENGTH = 32'h00000008
+    parameter SLAVE3_ORIGIN = 32'h00030000,
+    parameter SLAVE3_LENGTH = 32'h00000008
 )(
     axi_interf master_axi,
     axi_interf slave0_axi,
     axi_interf slave1_axi,
     axi_interf slave2_axi
+    axi_interf slave3_axi
 );
 
     localparam logic [31:0] S0_HIGH = SLAVE0_ORIGIN + SLAVE0_LENGTH;
     localparam logic [31:0] S1_HIGH = SLAVE1_ORIGIN + SLAVE1_LENGTH;
     localparam logic [31:0] S2_HIGH = SLAVE2_ORIGIN + SLAVE2_LENGTH;
+    localparam logic [31:0] S3_HIGH = SLAVE3_ORIGIN + SLAVE3_LENGTH;
 
     function logic in_s0(input logic [31:0] a); return (a >= SLAVE0_ORIGIN) && (a < S0_HIGH); endfunction
     function logic in_s1(input logic [31:0] a); return (a >= SLAVE1_ORIGIN) && (a < S1_HIGH); endfunction
     function logic in_s2(input logic [31:0] a); return (a >= SLAVE2_ORIGIN) && (a < S2_HIGH); endfunction
+    function logic in_s3(input logic [31:0] a); return (a >= SLAVE3_ORIGIN) && (a < S3_HIGH); endfunction
 
     // ---------- macros ----------
     // AR channel: forward address with base subtracted so slave sees offset from 0
@@ -59,22 +64,27 @@ module axi_interconnect # (
         slave0_axi.awvalid = 1'b0; slave0_axi.awaddr = 32'h0; slave0_axi.awprot = 3'h0;
         slave1_axi.awvalid = 1'b0; slave1_axi.awaddr = 32'h0; slave1_axi.awprot = 3'h0;
         slave2_axi.awvalid = 1'b0; slave2_axi.awaddr = 32'h0; slave2_axi.awprot = 3'h0;
+        slave3_axi.awvalid = 1'b0; slave3_axi.awaddr = 32'h0; slave3_axi.awprot = 3'h0;
 
         slave0_axi.wvalid  = 1'b0; slave0_axi.wdata  = 32'h0; slave0_axi.wstrb  = 4'h0;
         slave1_axi.wvalid  = 1'b0; slave1_axi.wdata  = 32'h0; slave1_axi.wstrb  = 4'h0;
         slave2_axi.wvalid  = 1'b0; slave2_axi.wdata  = 32'h0; slave2_axi.wstrb  = 4'h0;
+        slave3_axi.wvalid  = 1'b0; slave3_axi.wdata  = 32'h0; slave3_axi.wstrb  = 4'h0;
 
         slave0_axi.arvalid = 1'b0; slave0_axi.araddr = 32'h0; slave0_axi.arprot = 3'h0;
         slave1_axi.arvalid = 1'b0; slave1_axi.araddr = 32'h0; slave1_axi.arprot = 3'h0;
         slave2_axi.arvalid = 1'b0; slave2_axi.araddr = 32'h0; slave2_axi.arprot = 3'h0;
+        slave3_axi.arvalid = 1'b0; slave3_axi.araddr = 32'h0; slave3_axi.arprot = 3'h0;
 
         slave0_axi.bready  = 1'b0;
         slave1_axi.bready  = 1'b0;
         slave2_axi.bready  = 1'b0;
+        slave3_axi.bready  = 1'b0;
 
         slave0_axi.rready  = 1'b0;
         slave1_axi.rready  = 1'b0;
         slave2_axi.rready  = 1'b0;
+        slave3_axi.rready  = 1'b0;
 
         master_axi.awready = 1'b0;
         master_axi.wready  = 1'b0;
@@ -89,6 +99,8 @@ module axi_interconnect # (
                 `CONNECT_AR_M_TO_S(master_axi, slave1_axi, SLAVE1_ORIGIN)
             end else if (in_s2(master_axi.araddr)) begin
                 `CONNECT_AR_M_TO_S(master_axi, slave2_axi, SLAVE2_ORIGIN)
+            end else if (in_s3(master_axi.araddr)) begin
+                `CONNECT_AR_M_TO_S(master_axi, slave3_axi, SLAVE3_ORIGIN)
             end else begin
                 `CONNECT_AR_M_TO_S(master_axi, slave0_axi, SLAVE0_ORIGIN)
             end
@@ -100,6 +112,8 @@ module axi_interconnect # (
                 `CONNECT_AW_M_TO_S(master_axi, slave1_axi, SLAVE1_ORIGIN)
             end else if (in_s2(master_axi.awaddr)) begin
                 `CONNECT_AW_M_TO_S(master_axi, slave2_axi, SLAVE2_ORIGIN)
+            end else if (in_s3(master_axi.awaddr)) begin
+                `CONNECT_AW_M_TO_S(master_axi, slave3_axi, SLAVE3_ORIGIN)
             end else begin
                 `CONNECT_AW_M_TO_S(master_axi, slave0_axi, SLAVE0_ORIGIN)
             end
@@ -111,6 +125,8 @@ module axi_interconnect # (
                 `CONNECT_W_M_TO_S(master_axi, slave1_axi)
             end else if (in_s2(master_axi.awaddr)) begin
                 `CONNECT_W_M_TO_S(master_axi, slave2_axi)
+            end else if (in_s3(master_axi.awaddr)) begin
+                `CONNECT_W_M_TO_S(master_axi, slave3_axi)
             end else begin
                 `CONNECT_W_M_TO_S(master_axi, slave0_axi)
             end
@@ -121,6 +137,8 @@ module axi_interconnect # (
             `CONNECT_B_S_TO_M(master_axi, slave1_axi)
         end else if (in_s2(master_axi.awaddr)) begin
             `CONNECT_B_S_TO_M(master_axi, slave2_axi)
+        end else if (in_s3(master_axi.awaddr)) begin
+            `CONNECT_B_S_TO_M(master_axi, slave3_axi)
         end else begin
             `CONNECT_B_S_TO_M(master_axi, slave0_axi)
         end
@@ -130,6 +148,8 @@ module axi_interconnect # (
             `CONNECT_R_S_TO_M(master_axi, slave1_axi)
         end else if (in_s2(master_axi.araddr)) begin
             `CONNECT_R_S_TO_M(master_axi, slave2_axi)
+        end else if (in_s3(master_axi.araddr)) begin
+            `CONNECT_R_S_TO_M(master_axi, slave3_axi)
         end else begin
             `CONNECT_R_S_TO_M(master_axi, slave0_axi)
         end

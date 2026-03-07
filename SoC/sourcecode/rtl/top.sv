@@ -106,11 +106,17 @@ module top (
         .SLAVE1_LENGTH(32'h0000000c),
         .SLAVE2_ORIGIN(32'h00020000),
         .SLAVE2_LENGTH(32'h00000008)
+        .SLAVE3_ORIGIN(32'h00030000),
+        .SLAVE3_LENGTH(32'h00000008)
     ) mux (
         .master_axi(picorv32_axi.master),
         .slave0_axi(mem_axi.slave),
         .slave1_axi(uart_axi.slave),
+<<<<<<< HEAD
         .slave2_axi(gpio_axi.slave),
+=======
+        .slave2_axi(gpio_axi.slave)
+>>>>>>> d2b2385 (did git rebase and added ashmit's files)
         .slave3_axi(imc_axi.slave)
     );
 
@@ -203,6 +209,7 @@ module top (
         .gpio_oe  ()          // leave unconnected
     );
 
+<<<<<<< HEAD
     //ReRAM-IMC
 
     imc_memory_block imc (
@@ -211,6 +218,13 @@ module top (
 
         // AXI interface
         .imc_axi(imc_axi.slave)
+=======
+    imc_memory_block imc (
+        .clk      (clk),
+        .resetn   (resetn),
+
+        .imc_axi  (imc_axi.slave)
+>>>>>>> d2b2385 (did git rebase and added ashmit's files)
     );
 
 endmodule
