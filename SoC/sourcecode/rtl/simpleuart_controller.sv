@@ -1,4 +1,9 @@
-module simpleuart_axi_adapter #() (
+// controller for simpleuart, an AXI4-lite slave that connects to the simpleuart module
+
+module simpleuart_controller #(
+    parameter UART_ORIGIN = 32'h00000000,
+    parameter UART_LENGTH = 32'h0000000c
+) (
     input logic clk, resetn,
 
     // AXI4-lite slave
@@ -61,13 +66,13 @@ module simpleuart_axi_adapter #() (
             if (uart_axi.awvalid && uart_axi.wvalid) begin
                 case (uart_axi.awaddr)
 
-                    32'h00018004: begin // baud divider register
+                    UART_ORIGIN + 4: begin // baud divider register
                         reg_div_we <= 4'b1111;
                         reg_div_di <= uart_axi.wdata;
                         ack_bvalid <= 1;
                     end
 
-                    32'h00018008: begin // TX data register
+                    UART_ORIGIN + 8: begin // TX data register
                         if (!reg_dat_wait) begin
                             reg_dat_we <= 1;
                             reg_dat_di <= uart_axi.wdata;
@@ -85,17 +90,17 @@ module simpleuart_axi_adapter #() (
             if (uart_axi.arvalid) begin
                 case (uart_axi.araddr)
 
-                    32'h00018000: begin // flags register: bit 0 = TX ready
+                    UART_ORIGIN + 0: begin // flags register: bit 0 = TX ready
                         ack_rdata  <= {31'b0, !reg_dat_wait};
                         ack_rvalid <= 1;
                     end
 
-                    32'h00018004: begin // baud divider register
+                    UART_ORIGIN + 4: begin // baud divider register
                         ack_rdata  <= reg_div_do;
                         ack_rvalid <= 1;
                     end
 
-                    32'h00018008: begin // RX data register
+                    UART_ORIGIN + 8: begin // RX data register
                         reg_dat_re <= 1;
                         ack_rdata  <= reg_dat_do;
                         ack_rvalid <= 1;

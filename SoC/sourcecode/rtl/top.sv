@@ -99,7 +99,14 @@ module top (
     );
 
     // AXI mux to interface with multiple slaves; i.e. axi interconnect
-    axi_mux mux (
+    axi_interconnect #(
+        .SLAVE0_ORIGIN(32'h00000000),
+        .SLAVE0_LENGTH(32'h00018000), // covers ROM + RAM
+        .SLAVE1_ORIGIN(32'h00018000),
+        .SLAVE1_LENGTH(32'h0000000c),
+        .SLAVE2_ORIGIN(32'h00020000),
+        .SLAVE2_LENGTH(32'h00000008)
+    ) mux (
         .master_axi(picorv32_axi.master),
         .slave0_axi(mem_axi.slave),
         .slave1_axi(uart_axi.slave),
@@ -143,7 +150,7 @@ module top (
     );
 
     //uart AXI adapter
-    simpleuart_axi_adapter uart_adapter (
+    simpleuart_controller controller (
         .clk        (clk),
         .resetn     (resetn),
 
