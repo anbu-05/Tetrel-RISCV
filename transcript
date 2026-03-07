@@ -1,0 +1,313 @@
+# //  Questa Altera Starter FPGA Edition-64
+# //  Version 2025.2 linux_x86_64 May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+pwd
+# /mnt/windows_z/Z/projects/RISCV/Tetrel-RISCV
+cd SoC/sim
+# reading modelsim.ini
+do run.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# Questa Altera Starter FPGA Edition-64 vmap 2025.2 Lib Mapping Utility 2025.05 May 31 2025
+# vmap work work 
+# ** Note: (vmap-220) 'modelsim.ini' is used as the ini file.
+# Modifying modelsim.ini
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 02:04:29 on Mar 08,2026
+# vlog -reportprogress 300 ../sourcecode/rtl/picorv32.v ../sourcecode/rtl/simpleuart.v 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module picorv32
+# -- Compiling module picorv32_regs
+# -- Compiling module picorv32_pcpi_mul
+# -- Compiling module picorv32_pcpi_fast_mul
+# -- Compiling module picorv32_pcpi_div
+# -- Compiling module picorv32_axi
+# -- Compiling module picorv32_axi_adapter
+# -- Compiling module picorv32_wb
+# -- Compiling module simpleuart
+# 
+# Top level modules:
+# 	picorv32_regs
+# 	picorv32_axi
+# 	picorv32_wb
+# 	simpleuart
+# End time: 02:04:29 on Mar 08,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 02:04:29 on Mar 08,2026
+# vlog -reportprogress 300 ../sourcecode/rtl/axi_interconnect.sv ../sourcecode/rtl/axi_interf.sv ../sourcecode/rtl/simplegpio.sv ../sourcecode/rtl/simplemem.sv ../sourcecode/rtl/simplemem_axi_adapter.sv ../sourcecode/rtl/simpleuart_controller.sv ../sourcecode/rtl/top.sv 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module axi_interconnect
+# -- Compiling interface axi_interf
+# -- Compiling module simplegpio
+# -- Compiling module simplemem
+# -- Compiling module simplemem_axi_adapter
+# -- Compiling module simpleuart_controller
+# -- Compiling module top
+# 
+# Top level modules:
+# 	axi_interconnect
+# 	simpleuart_controller
+# 	top
+# End time: 02:04:29 on Mar 08,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 02:04:29 on Mar 08,2026
+# vlog -reportprogress 300 ../sourcecode/tb/top_tb.sv 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module top_tb
+# 
+# Top level modules:
+# 	top_tb
+# End time: 02:04:29 on Mar 08,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
+# vsim -voptargs=""+acc"" "+define+TEST_UART_RX" work.top_tb 
+# Start time: 02:04:29 on Mar 08,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
+# ** Note: (vopt-143) Recognized 2 FSMs in module "picorv32(fast)".
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2685) [TFMPC] - Too few port connections for 'core'.  Expected 27, found 9.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'trace_data'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'trace_valid'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'eoi'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'irq'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_ready'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_wait'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_rd'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_wr'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_rs2'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_rs1'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_insn'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_valid'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_wstrb'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_wdata'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_addr'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_write'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_read'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'trap'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.top_tb(fast)
+# Loading work.top(fast)
+# Loading work.axi_interf(fast__1)
+# Loading work.axi_interf(fast__2)
+# Loading work.picorv32(fast)
+# Loading work.picorv32_pcpi_mul(fast)
+# Loading work.picorv32_axi_adapter(fast)
+# Loading work.axi_mux(fast)
+# Loading work.simplemem_axi_adapter(fast)
+# Loading work.simplemem(fast)
+# Loading work.simpleuart_axi_adapter(fast)
+# Loading work.simpleuart(fast)
+# Loading work.simplegpio(fast)
+# Unable to lock WLF file "vsim.wlf". Retrying 1 times, errno 11
+# Unable to lock WLF file "vsim.wlf". Retrying 2 times, errno 11
+# Unable to lock WLF file "vsim.wlf". Retrying 3 times, errno 11
+# Cannot lock WLF file: "vsim.wlf"
+#           errno 11: Resource temporarily unavailable.
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: anbu  Hostname: Nitro-Ubuntu  ProcessID: 54519
+#           Attempting to use alternate WLF file "./wlft28GIhw".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlft28GIhw
+# [781000] Running: UNKNOWN     (ID=0xa0005004)
+# [10000000000] TIMEOUT — test did not complete. Partial results:
+# ---- Signature Results ----
+#   SIG[ 0] UNUSED
+#   SIG[ 1] UNUSED
+#   SIG[ 2] UNUSED
+#   SIG[ 3] UNUSED
+#   SIG[ 4] UNUSED
+#   SIG[ 5] UNUSED
+#   SIG[ 6] UNUSED
+#   SIG[ 7] UNUSED
+#   SIG[ 8] UNUSED
+#   SIG[ 9] UNUSED
+#   SIG[10] UNUSED
+#   SIG[11] UNUSED
+#   SIG[12] UNUSED
+#   SIG[13] UNUSED
+#   SIG[14] UNUSED
+#   SIG[15] UNUSED
+#   SIG[16] UNUSED
+#   SIG[17] UNUSED
+#   SIG[18] UNUSED
+#   SIG[19] UNUSED
+#   SIG[20] UNUSED
+#   SIG[21] UNUSED
+#   SIG[22] UNUSED
+#   SIG[23] UNUSED
+#   SIG[24] UNUSED
+#   SIG[25] UNUSED
+#   SIG[26] UNUSED
+#   SIG[27] UNUSED
+#   SIG[28] UNUSED
+#   SIG[29] UNUSED
+#   SIG[30] UNUSED
+#   SIG[31] ID     (0xa0005004)
+# ---------------------------
+# ** Note: $finish    : ../sourcecode/tb/top_tb.sv(80)
+#    Time: 10 ms  Iteration: 0  Instance: /top_tb
+# 1
+# Break in Module top_tb at ../sourcecode/tb/top_tb.sv line 80
+do run.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# Questa Altera Starter FPGA Edition-64 vmap 2025.2 Lib Mapping Utility 2025.05 May 31 2025
+# vmap work work 
+# ** Note: (vmap-220) 'modelsim.ini' is used as the ini file.
+# Modifying modelsim.ini
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 02:06:13 on Mar 08,2026
+# vlog -reportprogress 300 ../sourcecode/rtl/picorv32.v ../sourcecode/rtl/simpleuart.v 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module picorv32
+# -- Compiling module picorv32_regs
+# -- Compiling module picorv32_pcpi_mul
+# -- Compiling module picorv32_pcpi_fast_mul
+# -- Compiling module picorv32_pcpi_div
+# -- Compiling module picorv32_axi
+# -- Compiling module picorv32_axi_adapter
+# -- Compiling module picorv32_wb
+# -- Compiling module simpleuart
+# 
+# Top level modules:
+# 	picorv32_regs
+# 	picorv32_axi
+# 	picorv32_wb
+# 	simpleuart
+# End time: 02:06:13 on Mar 08,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 02:06:13 on Mar 08,2026
+# vlog -reportprogress 300 ../sourcecode/rtl/axi_interconnect.sv ../sourcecode/rtl/axi_interf.sv ../sourcecode/rtl/simplegpio.sv ../sourcecode/rtl/simplemem.sv ../sourcecode/rtl/simplemem_axi_adapter.sv ../sourcecode/rtl/simpleuart_controller.sv ../sourcecode/rtl/top.sv 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module axi_interconnect
+# -- Compiling interface axi_interf
+# -- Compiling module simplegpio
+# -- Compiling module simplemem
+# -- Compiling module simplemem_axi_adapter
+# -- Compiling module simpleuart_controller
+# -- Compiling module top
+# 
+# Top level modules:
+# 	axi_interconnect
+# 	simpleuart_controller
+# 	top
+# End time: 02:06:13 on Mar 08,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Questa Altera Starter FPGA Edition-64 vlog 2025.2 Compiler 2025.05 May 31 2025
+# Start time: 02:06:13 on Mar 08,2026
+# vlog -reportprogress 300 ../sourcecode/tb/top_tb.sv 
+# ** Note: (vlog-220) 'modelsim.ini' is used as the ini file.
+# -- Compiling module top_tb
+# 
+# Top level modules:
+# 	top_tb
+# End time: 02:06:14 on Mar 08,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# End time: 02:06:14 on Mar 08,2026, Elapsed time: 0:01:45
+# Errors: 0, Warnings: 22
+# ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
+# vsim -voptargs=""+acc"" "+define+TEST_SMOKE_TEST" work.top_tb 
+# Start time: 02:06:14 on Mar 08,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10908) Some optimizations are turned off because the +acc switch is in effect.
+# ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2685) [TFMPC] - Too few port connections for 'core'.  Expected 27, found 9.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'trace_data'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'trace_valid'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'eoi'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'irq'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_ready'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_wait'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_rd'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_wr'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_rs2'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_rs1'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_insn'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'pcpi_valid'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_wstrb'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_wdata'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_addr'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_write'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'mem_la_read'.
+# ** Warning: ../sourcecode/rtl/top.sv(48): (vopt-2718) [TFMPC] - Missing connection for port 'trap'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=20.
+# Loading sv_std.std
+# Loading work.top_tb(fast)
+# Loading work.top(fast)
+# Loading work.axi_interf(fast__1)
+# Loading work.axi_interf(fast__2)
+# Loading work.picorv32(fast)
+# Loading work.picorv32_pcpi_mul(fast)
+# Loading work.picorv32_axi_adapter(fast)
+# Loading work.axi_mux(fast)
+# Loading work.simplemem_axi_adapter(fast)
+# Loading work.simplemem(fast)
+# Loading work.simpleuart_axi_adapter(fast)
+# Loading work.simpleuart(fast)
+# Loading work.simplegpio(fast)
+# Unable to lock WLF file "vsim.wlf". Retrying 1 times, errno 11
+# Unable to lock WLF file "vsim.wlf". Retrying 2 times, errno 11
+# Unable to lock WLF file "vsim.wlf". Retrying 3 times, errno 11
+# Cannot lock WLF file: "vsim.wlf"
+#           errno 11: Resource temporarily unavailable.
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: anbu  Hostname: Nitro-Ubuntu  ProcessID: 54519
+#           Attempting to use alternate WLF file "./wlftFRRt1Q".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftFRRt1Q
+# [871000] Running: UNKNOWN     (ID=0xa0005001)
+# [10000000000] TIMEOUT — test did not complete. Partial results:
+# ---- Signature Results ----
+#   SIG[ 0] PASS   (0xa0000add)
+#   SIG[ 1] PASS   (0xa00000a1)
+#   SIG[ 2] PASS   (0xa00000a2)
+#   SIG[ 3] UNUSED
+#   SIG[ 4] UNUSED
+#   SIG[ 5] UNUSED
+#   SIG[ 6] UNUSED
+#   SIG[ 7] UNUSED
+#   SIG[ 8] UNUSED
+#   SIG[ 9] UNUSED
+#   SIG[10] UNUSED
+#   SIG[11] UNUSED
+#   SIG[12] UNUSED
+#   SIG[13] UNUSED
+#   SIG[14] UNUSED
+#   SIG[15] UNUSED
+#   SIG[16] UNUSED
+#   SIG[17] UNUSED
+#   SIG[18] UNUSED
+#   SIG[19] UNUSED
+#   SIG[20] UNUSED
+#   SIG[21] UNUSED
+#   SIG[22] UNUSED
+#   SIG[23] UNUSED
+#   SIG[24] UNUSED
+#   SIG[25] UNUSED
+#   SIG[26] UNUSED
+#   SIG[27] UNUSED
+#   SIG[28] UNUSED
+#   SIG[29] UNUSED
+#   SIG[30] UNUSED
+#   SIG[31] ID     (0xa0005001)
+# ---------------------------
+# ** Note: $finish    : ../sourcecode/tb/top_tb.sv(80)
+#    Time: 10 ms  Iteration: 0  Instance: /top_tb
+# 1
+# Break in Module top_tb at ../sourcecode/tb/top_tb.sv line 80
