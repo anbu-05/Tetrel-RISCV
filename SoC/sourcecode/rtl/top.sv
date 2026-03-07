@@ -41,6 +41,7 @@ module top (
     axi_interf mem_axi();
     axi_interf uart_axi();
     axi_interf gpio_axi();
+    axi_interf imc_axi();
 
 //---------instantiations---------
     // PicoRV32 core
@@ -102,7 +103,8 @@ module top (
         .master_axi(picorv32_axi.master),
         .slave0_axi(mem_axi.slave),
         .slave1_axi(uart_axi.slave),
-        .slave2_axi(gpio_axi.slave)
+        .slave2_axi(gpio_axi.slave),
+        .slave3_axi(imc_axi.slave)
     );
 
     //simple memory AXI adapter
@@ -192,6 +194,16 @@ module top (
         .gpio_in  (32'b0),    // tie to 0 for now, no physical pins in sim
         .gpio_out (),         // leave unconnected, we don't need it in sim
         .gpio_oe  ()          // leave unconnected
+    );
+
+    //ReRAM-IMC
+
+    imc_memory_block imc (
+        .clk        (clk),
+        .resetn     (resetn),
+
+        // AXI interface
+        .imc_axi(imc_axi.slave)
     );
 
 endmodule

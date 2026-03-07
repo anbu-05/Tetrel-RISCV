@@ -6,12 +6,15 @@ module axi_mux # (
     parameter SLAVE1_REG_ORIGIN = 32'h00018000,
     parameter SLAVE1_REG_LENGTH = 32'h0000000c,
     parameter SLAVE2_REG_ORIGIN = 32'h00020000,
-    parameter SLAVE2_REG_LENGTH = 32'h00000008
+    parameter SLAVE2_REG_LENGTH = 32'h00000008,
+    parameter SLAVE3_REG_ORIGIN = 32'h00028000,
+    parameter SLAVE3_REG_LENGTH = 32'h00000008
 )(
     axi_interf master_axi,
     axi_interf  slave0_axi,
     axi_interf  slave1_axi,
-    axi_interf  slave2_axi
+    axi_interf  slave2_axi,
+    axi_interf  slave3_axi
 );
 
     // small helpers
@@ -24,6 +27,7 @@ module axi_mux # (
     function logic in_ram(input logic [31:0] a); return (a >= RAM_ORIGIN) && (a < RAM_HIGH); endfunction
     function logic in_s1(input logic [31:0] a);  return (a >= SLAVE1_REG_ORIGIN) && (a < S1_HIGH); endfunction
     function logic in_s2(input logic [31:0] a);  return (a >= SLAVE2_REG_ORIGIN) && (a < S2_HIGH); endfunction
+    function logic in_s3(input logic [31:0] a);  return (a >= SLAVE3_REG_ORIGIN) && (a < S3_HIGH); endfunction
 
     // ---------- macros (correct directions) ----------
     `define CONNECT_AR_M_TO_S(m,s) \
@@ -60,22 +64,27 @@ module axi_mux # (
         slave0_axi.awvalid = 1'b0; slave0_axi.awaddr = 32'h0; slave0_axi.awprot = 3'h0;
         slave1_axi.awvalid = 1'b0; slave1_axi.awaddr = 32'h0; slave1_axi.awprot = 3'h0;
         slave2_axi.awvalid = 1'b0; slave2_axi.awaddr = 32'h0; slave2_axi.awprot = 3'h0;
+        slave3_axi.awvalid = 1'b0; slave3_axi.awaddr = 32'h0; slave3_axi.awprot = 3'h0;
 
         slave0_axi.wvalid  = 1'b0; slave0_axi.wdata  = 32'h0; slave0_axi.wstrb  = 4'h0;
         slave1_axi.wvalid  = 1'b0; slave1_axi.wdata  = 32'h0; slave1_axi.wstrb  = 4'h0;
         slave2_axi.wvalid  = 1'b0; slave2_axi.wdata  = 32'h0; slave2_axi.wstrb  = 4'h0;
+        slave3_axi.wvalid  = 1'b0; slave3_axi.wdata  = 32'h0; slave3_axi.wstrb  = 4'h0;
 
         slave0_axi.arvalid = 1'b0; slave0_axi.araddr = 32'h0; slave0_axi.arprot = 3'h0;
         slave1_axi.arvalid = 1'b0; slave1_axi.araddr = 32'h0; slave1_axi.arprot = 3'h0;
         slave2_axi.arvalid = 1'b0; slave2_axi.araddr = 32'h0; slave2_axi.arprot = 3'h0;
+        slave3_axi.arvalid = 1'b0; slave3_axi.araddr = 32'h0; slave3_axi.arprot = 3'h0;
 
         slave0_axi.bready  = 1'b0;
         slave1_axi.bready  = 1'b0;
         slave2_axi.bready  = 1'b0;
+        slave3_axi.bready  = 1'b0;
 
         slave0_axi.rready  = 1'b0;
         slave1_axi.rready  = 1'b0;
         slave2_axi.rready  = 1'b0;
+        slave3_axi.rready  = 1'b0;
 
         // master defaults (responses/ready)
         master_axi.awready = 1'b0;
@@ -92,6 +101,8 @@ module axi_mux # (
                 `CONNECT_AR_M_TO_S(master_axi, slave1_axi)
             end else if (in_s2(master_axi.araddr)) begin
                 `CONNECT_AR_M_TO_S(master_axi, slave2_axi)
+            end else if (in_s3(master_axi.araddr)) begin
+                `CONNECT_AR_M_TO_S(master_axi, slave3_axi)
             end else begin
                 // ROM or RAM -> slave0
                 `CONNECT_AR_M_TO_S(master_axi, slave0_axi)
@@ -106,6 +117,8 @@ module axi_mux # (
                 `CONNECT_AW_M_TO_S(master_axi, slave1_axi)
             end else if (in_s2(master_axi.awaddr)) begin
                 `CONNECT_AW_M_TO_S(master_axi, slave2_axi)
+            end else if (in_s3(master_axi.awaddr)) begin
+                `CONNECT_AW_M_TO_S(master_axi, slave3_axi)
             end else begin
                 `CONNECT_AW_M_TO_S(master_axi, slave0_axi)
             end
@@ -119,6 +132,8 @@ module axi_mux # (
                 `CONNECT_W_M_TO_S(master_axi, slave1_axi)
             end else if (in_s2(master_axi.awaddr)) begin
                 `CONNECT_W_M_TO_S(master_axi, slave2_axi)
+            end else if (in_s3(master_axi.awaddr)) begin
+                `CONNECT_W_M_TO_S(master_axi, slave3_axi)
             end else begin
                 `CONNECT_W_M_TO_S(master_axi, slave0_axi)
             end
@@ -130,6 +145,8 @@ module axi_mux # (
             `CONNECT_B_S_TO_M(master_axi, slave1_axi)
         end else if (in_s2(master_axi.awaddr)) begin
             `CONNECT_B_S_TO_M(master_axi, slave2_axi)
+        end else if (in_s3(master_axi.awaddr)) begin
+            `CONNECT_B_S_TO_M(master_axi, slave3_axi)
         end else begin
             `CONNECT_B_S_TO_M(master_axi, slave0_axi)
         end
@@ -140,6 +157,8 @@ module axi_mux # (
             `CONNECT_R_S_TO_M(master_axi, slave1_axi)
         end else if (in_s2(master_axi.araddr)) begin
             `CONNECT_R_S_TO_M(master_axi, slave2_axi)
+        end else if (in_s3(master_axi.araddr)) begin
+            `CONNECT_R_S_TO_M(master_axi, slave3_axi)
         end else begin
             `CONNECT_R_S_TO_M(master_axi, slave0_axi)
         end
