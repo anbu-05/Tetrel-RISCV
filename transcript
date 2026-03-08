@@ -164,9 +164,9 @@ do run.do
 # 1
 # Break in Module top_tb at ../sourcecode/tb/top_tb.sv line 80
 do run.do
-# ** Warning: (vlib-34) Library already exists at "work".
-# Errors: 0, Warnings: 1
-# Questa Altera Starter FPGA Edition-64 vmap 2025.2 Lib Mapping Utility 2025.05 May 31 2025
+# ** Warning: (vlib-34) # End time: 21:56:02 on Mar 08,2026, Elapsed time: 20:41:38
+# Errors: 0, Warnings: 20
+A Edition-64 vmap 2025.2 Lib Mapping Utility 2025.05 May 31 2025
 # vmap work work 
 # ** Note: (vmap-220) 'modelsim.ini' is used as the ini file.
 # Modifying modelsim.ini

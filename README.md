@@ -1,6 +1,6 @@
 # Tetrel-RISCV
 
-Tetrel-RISCV is an RV32IMC SoC built around the `picorv32` core. The project focuses on clarity and correctness first, with simulation-driven development using QuestaSim and Xcelium.
+Tetrel-RISCV is an RV32IM SoC built around the `picorv32` core. The project focuses on clarity and correctness first, with simulation-driven development using QuestaSim and Xcelium.
 
 ## Overview
 
@@ -41,13 +41,14 @@ sudo apt install gcc-riscv64-unknown-elf
 ```
 
 - Compiler: `riscv64-unknown-elf-gcc`
-- Target arch: `RV32IMC` (`-march=rv32imc -mabi=ilp32`)
+- Target arch: `RV32IM` (`-march=rv32im -mabi=ilp32`)
 
 ### Building firmware
 
 ```bash
 cd SoC/firmware
-make
+make clean
+make FILE=smoke_test
 ```
 
 This compiles your C program and produces a `.hex` file in `SoC/firmware/hex/`.
@@ -56,7 +57,7 @@ This compiles your C program and produces a `.hex` file in `SoC/firmware/hex/`.
 
 ```bash
 # Compile to ELF
-riscv64-unknown-elf-gcc -march=rv32imc -mabi=ilp32 -nostdlib \
+riscv64-unknown-elf-gcc -march=rv32im -mabi=ilp32 -nostdlib \
   -T linker.ld -o build/smoke_test.elf asm/start.S src/smoke_test.c
 
 # Convert ELF to HEX
@@ -79,7 +80,9 @@ For low-level validation and experimentation:
 - [RISC-V ISA Reference - lhtin](https://lhtin.github.io/01world/app/riscv-isa/?xlen=32)
     - [github repo](https://github.com/lhtin/01world/tree/main/app/riscv-isa-dev)
 
-You can find a progress log in [/SoC_progress/progress/Progress.md](https://github.com/anbu-05/Tetrel-RISCV/blob/main/SoC_progress/progress/Progress.md)
+[active progress log](https://github.com/anbu-05/Tetrel-RISCV/wiki/Dev-logs)
+
+You can find the progress log before 2026 in: [/SoC_progress/progress/Progress.md](https://github.com/anbu-05/Tetrel-RISCV/blob/main/SoC_progress/progress/Progress.md)
 
 ---
 
