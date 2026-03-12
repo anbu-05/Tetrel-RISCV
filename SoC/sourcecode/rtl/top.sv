@@ -97,6 +97,10 @@ module top (
         .mem_axi_rdata   (picorv32_axi.rdata)
     );
 
+    //NOTE: need to move the peripheral addresses to 32bit limit so that
+    //      it doesnt interfere with memory region when i add more memory
+    //      in the future.
+    // 
     // AXI mux to interface with multiple slaves; i.e. axi interconnect
     axi_interconnect #(
         .SLAVE0_ORIGIN(32'h00000000),
