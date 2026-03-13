@@ -12,3 +12,5 @@ plus i also like my vscode niceties. but then i figured out how to fix this issu
 i did it using claude here: https://claude.ai/share/48383d32-bc21-4b00-90ea-e5984c463da3
 
 i also briefly looked into verilator, about which i spoke on the claude chat, but with xcelium working flawlessly now, i can use that only
+
+test
