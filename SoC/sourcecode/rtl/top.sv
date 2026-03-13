@@ -45,7 +45,9 @@ module top (
 //---------instantiations---------
     // PicoRV32 core
     picorv32 #(
-        .ENABLE_MUL(1)
+        .ENABLE_MUL(1),
+        .ENABLE_DIV(1),
+        .COMPRESSED_ISA(1)
     ) core (
         .clk        (clk),
         .resetn     (resetn),
@@ -58,7 +60,7 @@ module top (
         .mem_rdata  (core_mem_rdata)
     );
 
-    
+
     // PicoRV32 AXI adapter
     picorv32_axi_adapter axi_adapter (
         // Native interface
@@ -136,7 +138,7 @@ module top (
 
     //simple memory module
     simplemem #(
-        .PROGRAM_HEX("../firmware/hex/smoke_test.hex")
+        .PROGRAM_HEX("../firmware/hex/program.hex")
     ) mem (
         .clk        (clk),
         .resetn     (resetn),
