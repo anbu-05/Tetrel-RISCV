@@ -1,7 +1,7 @@
 CC      = riscv64-unknown-elf-gcc
 OBJCOPY = riscv64-unknown-elf-objcopy
 
-CFLAGS = -march=rv32imc -mabi=ilp32 -nostdlib -I src
+CFLAGS = -march=rv32imc_zicsr -mabi=ilp32 -nostdlib -I src
 
 ASM    = bootloader/start.s
 LINKER = linker.ld
@@ -10,15 +10,19 @@ ELF    = build/program.elf
 HEX    = hex/program.hex
 
 # Assembly test files for instr_test
-INSTR_TEST_ASM = src/asm/test_alu_reg.S \
-                 src/asm/test_alu_imm.S \
-                 src/asm/test_load.S    \
-                 src/asm/test_store.S   \
-                 src/asm/test_branch.S  \
-                 src/asm/test_jump.S    \
-                 src/asm/test_upper.S   \
-                 src/asm/test_m.S       \
-                 src/asm/test_c_ext.S
+INSTR_TEST_ASM = src/asm/test_alu_reg.S    \
+                 src/asm/test_alu_imm.S    \
+                 src/asm/test_load.S       \
+                 src/asm/test_store.S      \
+                 src/asm/test_branch.S     \
+                 src/asm/test_jump.S       \
+                 src/asm/test_upper.S      \
+                 src/asm/test_m.S          \
+                 src/asm/test_c_alu.S      \
+                 src/asm/test_c_loadstore.S \
+                 src/asm/test_c_branch.S   \
+                 src/asm/test_c_jump.S     \
+                 src/asm/test_trap.S
 
 # If no target given, show a usage message
 default:
