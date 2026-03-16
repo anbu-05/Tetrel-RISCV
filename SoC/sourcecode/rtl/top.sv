@@ -47,7 +47,9 @@ module top (
     picorv32 #(
         .ENABLE_MUL(1),
         .ENABLE_DIV(1),
-        .COMPRESSED_ISA(1)
+        .COMPRESSED_ISA(1),
+        .ENABLE_IRQ(1),
+        .PROGADDR_IRQ(32'h00000100)
     ) core (
         .clk        (clk),
         .resetn     (resetn),
@@ -57,7 +59,9 @@ module top (
         .mem_addr   (core_mem_addr),
         .mem_wdata  (core_mem_wdata),
         .mem_wstrb  (core_mem_wstrb),
-        .mem_rdata  (core_mem_rdata)
+        .mem_rdata  (core_mem_rdata),
+        .irq        (32'b0),        // no external interrupts for now
+        .eoi        ()              // leave unconnected
     );
 
 

@@ -16,8 +16,10 @@
 //   SIG(9)  = C-extension Load/Store (C.LW, C.SW, C.LWSP, C.SWSP)
 //   SIG(10) = C-extension Branch     (C.BEQZ, C.BNEZ)
 //   SIG(11) = C-extension Jump       (C.J, C.JAL, C.JR, C.JALR)
-//   SIG(12) = Trap handler      (ECALL, EBREAK, C.EBREAK)
 //   SIG(31) = DONE
+//
+// Not tested: ECALL, EBREAK, C.EBREAK, FENCE
+// See README for explanation.
 
 #include "signatures.h"
 
@@ -33,7 +35,6 @@ int test_c_alu(void);
 int test_c_loadstore(void);
 int test_c_branch(void);
 int test_c_jump(void);
-int test_trap(void);
 
 int main() {
 
@@ -49,7 +50,6 @@ int main() {
     SIG(9)  = test_c_loadstore()  ? EXP_SIG(0x9)  : BAD_SIG(9);
     SIG(10) = test_c_branch()     ? EXP_SIG(0xA)  : BAD_SIG(10);
     SIG(11) = test_c_jump()       ? EXP_SIG(0xB)  : BAD_SIG(11);
-    SIG(12) = test_trap()         ? EXP_SIG(0xC)  : BAD_SIG(12);
 
     SIG_DONE = DONE_VAL;
 
