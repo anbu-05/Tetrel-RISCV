@@ -1,6 +1,4 @@
-module simplemem_axi_adapter #(
-    //
-) (
+module simplemem_axi_adapter #() (
     input logic clk, resetn,
 
     // AXI4-lite slave memory interface

@@ -1,9 +1,6 @@
 // controller for simpleuart, an AXI4-lite slave that connects to the simpleuart module
 
-module simpleuart_controller #(
-    parameter UART_ORIGIN = 32'h00000000,
-    parameter UART_LENGTH = 32'h0000000c
-) (
+module simpleuart_controller #() (
     input logic clk, resetn,
 
     // AXI4-lite slave

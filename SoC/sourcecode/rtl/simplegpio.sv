@@ -1,7 +1,5 @@
 module simplegpio #(
-    parameter GPIO_WIDTH = 32,
-    parameter GPIO_ORIGIN = 32'h00000000,
-    parameter GPIO_LENGTH = 32'h00000008 // 8 bytes: DATA reg + DIR reg
+    parameter GPIO_WIDTH = 32
 ) (
     input logic clk, resetn,
 
