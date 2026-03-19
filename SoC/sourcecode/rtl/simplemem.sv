@@ -1,12 +1,30 @@
+/* i built this memory module based on this article: 
+https://www.itdev.co.uk/blog/pipelining-axi-buses-registered-ready-signals
+
+and a basic generated d_ff (with enable) design:
+
+module d_ff_en (
+    input logic clk, resetn, en,
+    input logic d,
+    output logic q
+);
+    always_ff @(posedge clk or negedge resetn) begin
+        if (!resetn)
+            q <= 0;
+        else if (en)
+            q <= d;
+    end
+
+*/
+
+
 module simplemem #(
     parameter MEM_WORDS = 131072, //128KiB (MEM_WORDS * 4 bytes) (till address 0x00020000)
-    parameter ROM_ORIGIN = 32'h00000000,
-    parameter ROM_LENGTH = 32'h00010000, // 64 KiB
-    parameter RAM_ORIGIN = 32'h00010000,
-    parameter RAM_LENGTH = 32'h00008000, // 32 KiB
     parameter string PROGRAM_HEX = "../firmware/hex/smoke_test.hex"
 ) (
     input logic clk, resetn,
+
+    axi_interf mem,
 
     input  logic 		mem_valid, //
     input  logic 		mem_instr,
@@ -17,41 +35,115 @@ module simplemem #(
     output logic [31:0] mem_rdata //
 );
 
-    reg [31:0] memory [0:MEM_WORDS-1];
+    reg [31:0] memory [0:(MEM_WORDS/4)-1];
 
-    localparam logic [31:0] MEM_BASE = (ROM_ORIGIN < RAM_ORIGIN) ? ROM_ORIGIN : RAM_ORIGIN;
+    // AR: receiver
+    // R: sender
+    // AW: receiver
+    // W: receiver
+    // B: sender 
 
-	always @(posedge clk) begin
-		mem_ready <= 0;
-		if (mem_valid && !mem_ready) begin
-			if ((mem_addr >= ROM_ORIGIN && mem_addr < ROM_ORIGIN + ROM_LENGTH) || 
-                (mem_addr >= RAM_ORIGIN && mem_addr < RAM_ORIGIN + RAM_LENGTH)) begin
-                
-                integer word_index;
-                word_index = (mem_addr - MEM_BASE) >> 2;
+    reg [31:0] araddr_buffer;
+    reg [31:0] awaddr_buffer;
 
-                if (word_index >= 0 && word_index < MEM_WORDS) begin 
-                    mem_ready <= 1;
-                    mem_rdata <= memory[mem_addr >> 2];
-                    if (mem_wstrb[0]) memory[word_index][ 7: 0] <= mem_wdata[ 7: 0];
-                    if (mem_wstrb[1]) memory[word_index][15: 8] <= mem_wdata[15: 8];
-                    if (mem_wstrb[2]) memory[word_index][23:16] <= mem_wdata[23:16];
-                    if (mem_wstrb[3]) memory[word_index][31:24] <= mem_wdata[31:24];
-                end
-			end
-			/* add memory-mapped IO here */
-		end
-	end
+    handshake r_handshake (
+        .clk(clk), .resetn(resetn),
+
+        .UPSD(memory[araddr_buffer >> 2]), 
+        .UPSV(), 
+        .DNSR(),
+
+        .DNSD(mem.rdata), 
+        .DNSV(mem.rvalid), 
+        .UPSR(mem.rready)
+    );
+
+    handshake ar_handshake (
+        .clk(clk), .resetn(resetn),
+
+        .UPSD(mem.araddr), 
+        .UPSV(mem.arvalid), 
+        .DNSR(mem.arready),
+
+        .DNSD(araddr_buffer), 
+        .DNSV(), 
+        .UPSR()
+    );
+
+    handshake aw_handshake (
+        .clk(clk), .resetn(resetn),
+
+        .UPSD(), 
+        .UPSV(), 
+        .DNSR(),
+
+        .DNSD(), 
+        .DNSV(), 
+        .UPSR()
+    );
+
+    handshake w_handshake (
+        .clk(clk), .resetn(resetn),
+
+        .UPSD(), 
+        .UPSV(), 
+        .DNSR(),
+
+        .DNSD(), 
+        .DNSV(), 
+        .UPSR()
+    );
+
+    handshake b_handshake (
+        .clk(clk), .resetn(resetn),
+
+        .UPSD(), 
+        .UPSV(), 
+        .DNSR(),
+
+        .DNSD(), 
+        .DNSV(), 
+        .UPSR()
+    );
+
+
+//----------------------------------------------------------------------------
 
     // if ROM_ORIGIN is non-zero, load hex starting at that offset in the array
     initial begin
-        if (ROM_ORIGIN == MEM_BASE)
-            $readmemh(PROGRAM_HEX, memory);
-        else begin
-            integer rom_index;
-            rom_index = (ROM_ORIGIN - MEM_BASE) >> 2;
-            $readmemh(PROGRAM_HEX, memory, rom_index);
-        end
+        $readmemh(PROGRAM_HEX, memory);
     end
     
+endmodule
+
+module handshake (
+    input logic clk, resetn,
+    input logic UPSD, UPSV, DNSR,
+    output logic DNSD, DNSV, UPSR
+);
+
+    /*
+    D (data) = UPSD
+    Q (data) = DNSD
+
+    D (valid) = UPSV
+    Q (valid) = DNSV
+
+    en = UPSR = !Q (valid) || DNSR
+    */
+
+    reg ack;
+    assign ack = DNSV;
+    assign UPSR = !ack || DNSR; // en
+    always_ff @(posedge clk or posedge resetn) begin
+        if (!resetn) begin
+            DNSD <= 0; // Q (data) <= 0
+            DNSV <= 0; // Q (valid) <= 0
+        end else begin 
+            if (UPSR) begin // if en
+                DNSD <= UPSD; // Q (data) <= D (data)
+                DNSV <= UPSV; // Q (valid) <= D (valid)
+            end
+        end
+    end
 endmodule
