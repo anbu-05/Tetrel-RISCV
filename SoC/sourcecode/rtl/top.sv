@@ -90,6 +90,7 @@ module top (
         .mem_axi_wdata   (picorv32_axi.wdata),
         .mem_axi_wstrb   (picorv32_axi.wstrb),
             //Write Response Channel
+        // .mem_axi_bresp   (picorv32_axi.bresp), // picorv32 doesnt even use this, since bvalid doubles as the "OKAY" signal
         .mem_axi_bvalid  (picorv32_axi.bvalid),
         .mem_axi_bready  (picorv32_axi.bready),
             //Read Address Channel
@@ -122,24 +123,6 @@ module top (
         .slave2_axi(gpio_axi.slave)
     );
 
-    //simple memory AXI adapter
-    simplemem_axi_adapter mem_adapter (
-        .clk        (clk),
-        .resetn     (resetn),
-
-        //AXI interface
-        .mem_axi(mem_axi.slave),
-
-        // Native memory interface
-        .mem_valid  (memory_mem_valid),
-        .mem_instr  (memory_mem_instr),
-        .mem_ready  (memory_mem_ready),
-        .mem_addr   (memory_mem_addr),
-        .mem_wdata  (memory_mem_wdata),
-        .mem_wstrb  (memory_mem_wstrb),
-        .mem_rdata  (memory_mem_rdata)
-    );
-
     //simple memory module
     simplemem #(
         .PROGRAM_HEX("../firmware/hex/program.hex")
@@ -147,14 +130,8 @@ module top (
         .clk        (clk),
         .resetn     (resetn),
 
-        // Native memory interface
-        .mem_valid  (memory_mem_valid),
-        .mem_instr  (memory_mem_instr),
-        .mem_ready  (memory_mem_ready),
-        .mem_addr   (memory_mem_addr),
-        .mem_wdata  (memory_mem_wdata),
-        .mem_wstrb  (memory_mem_wstrb),
-        .mem_rdata  (memory_mem_rdata)
+        //AXI interface
+        .mem_axi(mem_axi.slave)
     );
 
     //uart AXI adapter

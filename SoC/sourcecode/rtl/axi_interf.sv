@@ -11,6 +11,7 @@ interface axi_interf;
 	logic [31:0] wdata;
 	logic [ 3:0] wstrb;
 
+    logic [ 1:0] bresp;
 	logic        bvalid;
 	logic        bready;
 
@@ -36,6 +37,7 @@ interface axi_interf;
         output  wdata,
         output  wstrb,
 
+        input   bresp,
         input   bvalid,
         output  bready,
 
@@ -62,6 +64,7 @@ interface axi_interf;
         input    wdata,
         input    wstrb,
 
+        output   bresp,
         output   bvalid,
         input    bready,
 
