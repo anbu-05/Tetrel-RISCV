@@ -47,6 +47,8 @@ add wave sim:/top_tb/dut/mem/w_handshake/DNSD
 add wave sim:/top_tb/dut/mem/w_handshake/DNSV
 add wave sim:/top_tb/dut/mem/w_handshake/DNSR
 
+add wave -divider "mem insternals"
+
 add wave -divider "B channel"
 add wave sim:/top_tb/dut/mem/b_handshake/UPSD
 add wave sim:/top_tb/dut/mem/b_handshake/UPSV
@@ -55,10 +57,12 @@ add wave sim:/top_tb/dut/mem/b_handshake/DNSD
 add wave sim:/top_tb/dut/mem/b_handshake/DNSV
 add wave sim:/top_tb/dut/mem/b_handshake/DNSR
 
-add wave -divider "Write"
+add wave -divider "mem internals"
 add wave sim:/top_tb/dut/mem/write_ready
 add wave sim:/top_tb/dut/mem/araddr_buffer
 add wave sim:/top_tb/dut/mem/awaddr_buffer
 add wave sim:/top_tb/dut/mem/wdata_buffer
+add wave sim:/top_tb/dut/mem/wstrb_buffer
+add wave sim:/top_tb/dut/mem_axi/wstrb
 
 run 10ms

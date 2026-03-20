@@ -37,17 +37,15 @@ module handshake (
 
     en = UPSR = !Q (valid) || DNSR
     */
-
-    reg ack;
-    assign ack = DNSV;
-    assign UPSR = !ack || DNSR; // en
+    
+    assign UPSR = !DNSV || DNSR; // en
     always_ff @(posedge clk) begin : handshake_logic
         if (!resetn) begin
             DNSD <= 0; // Q (data) <= 0
             DNSV <= 0; // Q (valid) <= 0
         end else begin 
             if (UPSR) begin // if en
-                DNSD <= UPSD; // Q (data) <= D (data)
+                if (UPSV) DNSD <= UPSD; // Q (data) <= D (data)
                 DNSV <= UPSV; // Q (valid) <= D (valid)
             end
         end
@@ -75,6 +73,11 @@ module simplemem #(
     reg [31:0] araddr_buffer;
     reg [31:0] awaddr_buffer;
     reg [31:0] wdata_buffer;
+    reg [ 3:0] wstrb_buffer;
+
+    wire write_ready; // internal signal to indicate both AW and W channels have valid data
+
+    //---------handshakes---------
 
     handshake r_handshake (
         .clk(clk), .resetn(resetn),
@@ -100,18 +103,6 @@ module simplemem #(
         .DNSR(r_handshake.UPSR) //input //araddr_buffer availability: did the R channel finish presenting data (checking this saves us from back to back writes messing up read data)
     );
 
-    wire write_ready; // internal signal to indicate both AW and W channels have valid data
-    assign write_ready = aw_handshake.DNSV && w_handshake.DNSV; // is the write ready to fire 1.e., are the write addresses and data valid?
-
-    always_ff @(posedge clk) begin : write_logic
-        if (write_ready) begin
-            if (mem_axi.wstrb[0]) memory[awaddr_buffer >> 2][ 7: 0] <= wdata_buffer[ 7: 0];
-            if (mem_axi.wstrb[1]) memory[awaddr_buffer >> 2][15: 8] <= wdata_buffer[15: 8];
-            if (mem_axi.wstrb[2]) memory[awaddr_buffer >> 2][23:16] <= wdata_buffer[23:16];
-            if (mem_axi.wstrb[3]) memory[awaddr_buffer >> 2][31:24] <= wdata_buffer[31:24];
-        end
-    end
-
     handshake aw_handshake (
         .clk(clk), .resetn(resetn),
 
@@ -136,6 +127,24 @@ module simplemem #(
         .DNSR(write_ready) //input //wdata_buffer availability
     );
 
+    //---------write execution---------
+
+    always_ff @(posedge clk) begin
+    if (mem_axi.wvalid && mem_axi.wready)
+        wstrb_buffer <= mem_axi.wstrb;
+    end
+
+    assign write_ready = aw_handshake.DNSV && w_handshake.DNSV; // is the write ready to fire 1.e., are the write addresses and data valid? AND write is not already in progress
+
+    always_ff @(posedge clk) begin : write_logic
+        if (write_ready) begin
+            if (wstrb_buffer[0]) memory[awaddr_buffer >> 2][ 7: 0] <= wdata_buffer[ 7: 0];
+            if (wstrb_buffer[1]) memory[awaddr_buffer >> 2][15: 8] <= wdata_buffer[15: 8];
+            if (wstrb_buffer[2]) memory[awaddr_buffer >> 2][23:16] <= wdata_buffer[23:16];
+            if (wstrb_buffer[3]) memory[awaddr_buffer >> 2][31:24] <= wdata_buffer[31:24];
+        end
+    end
+
     handshake b_handshake (
         .clk(clk), .resetn(resetn),
 
@@ -148,7 +157,7 @@ module simplemem #(
         .DNSR(mem_axi.bready) //input
     );
 
-//----------------------------------------------------------------------------
+//---------initialization (will be replaced when synthesizing on silicon)---------
 
     // if ROM_ORIGIN is non-zero, load hex starting at that offset in the array
     initial begin
