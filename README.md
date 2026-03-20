@@ -147,11 +147,10 @@ You can find the progress log before 2026 in: [/SoC_progress/progress/Progress.m
 ## Memory Map
 
 ```
-ROM   : 0x00000000 – 0x0000FFFF  (64 KiB)        program code
-RAM   : 0x00010000 – 0x00017F7F  (32 KiB - 128 B) stack and variables
-SIG   : 0x00017F80 – 0x00017FFF  (128 B)          signature registers (reserved)
-UART  : 0x00018000 – 0x0001800B  (12 B)           serial UART
-GPIO  : 0x00020000 – 0x00020007  (8 B)            general purpose I/O
+RAM   : 0x00000000 – 0x0001FF7F  (128 KiB - 128 B)                program code, stack and variables
+SIG   : 0x0001FF80 – 0x0001FFFF  (128 B / 32 registers)           signature registers (reserved)
+UART  : 0xFFFF1000 – 0xFFFF100B  (12 B / 3 registers)             serial UART
+GPIO  : 0xFFFF2000 – 0xFFFF2007  (8 B / 2 registers)              general purpose I/O
 ```
 
 Program execution starts at `0x00000000`.
@@ -165,17 +164,17 @@ The `axi_interconnect` is the bus interconnect. It sits between the CPU and all 
 Each slave is assigned an origin and a length in the interconnect's parameters:
 
 ```systemverilog
-axi_interconnect #(
-    .SLAVE0_ORIGIN(32'h00000000),  // SRAM (ROM + RAM)
-    .SLAVE0_LENGTH(32'h00018000),
-    .SLAVE1_ORIGIN(32'h00018000),  // UART
-    .SLAVE1_LENGTH(32'h0000000c),
-    .SLAVE2_ORIGIN(32'h00020000),  // GPIO
-    .SLAVE2_LENGTH(32'h00000008)
-) interconnect ( ... );
+axi_interconnect # (
+    parameter SLAVE0_ORIGIN = 32'h00000000,
+    parameter SLAVE0_LENGTH = 32'h00020000,
+    parameter SLAVE1_ORIGIN = 32'hFFFF1000,
+    parameter SLAVE1_LENGTH = 32'h0000000c,
+    parameter SLAVE2_ORIGIN = 32'hFFFF2000,
+    parameter SLAVE2_LENGTH = 32'h00000008
+)
 ```
 
-**Address offsetting:** before forwarding a transaction to a slave, the mux subtracts that slave's origin from the address. So a CPU access to `0x00018004` (UART DIV register) arrives at the UART peripheral as `0x00000004`.
+**Address offsetting:** before forwarding a transaction to a slave, the mux subtracts that slave's origin from the address. So a CPU access to `0xFFFF1004` (UART DIV register) arrives at the UART peripheral as `0x00000004`.
 
 This means every peripheral can assume its own registers start at `0x00000000`. The peripheral doesn't need to know where it lives in the system address space — that's entirely the mux's concern.
 
@@ -227,9 +226,9 @@ The peripheral's own RTL just uses offsets from `0x0` with no knowledge of the s
 
 ## Signature Registers
 
-The top 128 bytes of RAM (`0x00017F80 – 0x00017FFF`) are reserved as 32 signature registers. These are used by C firmware to communicate test results to the testbench without needing UART or any other peripheral.
+The top 128 bytes of RAM (`0x0001FF80 – 0x0001FFFF`) are reserved as 32 signature registers. These are used by C firmware to communicate test results to the testbench without needing UART or any other peripheral.
 
-The linker script sets `_stack_top = 0x00017F80` so the stack never grows into this region.
+The linker script sets `_stack_top = 0x0001FF80` so the stack never grows into this region.
 
 ### How it works
 
@@ -242,11 +241,11 @@ The linker script sets `_stack_top = 0x00017F80` so the stack never grows into t
 
 | Slot | Address      | Notes            |
 |------|--------------|------------------|
-| 0    | `0x00017F80` | general purpose  |
-| 1    | `0x00017F84` | general purpose  |
+| 0    | `0x0001FF80` | general purpose  |
+| 1    | `0x0001FF84` | general purpose  |
 | …    | …            | …                |
-| 30   | `0x00017FF8` | general purpose  |
-| 31   | `0x00017FFC` | `SIG_DONE` only  |
+| 30   | `0x0001FFF8` | general purpose  |
+| 31   | `0x0001FFFC` | `SIG_DONE` only  |
 
 Slot 31 is reserved. Writing `0xDEADBEEF` to it tells the testbench the test is complete.
 
@@ -319,8 +318,7 @@ loop:
 
 **`linker.ld`** — tells the linker where to place code and data in memory:
 ```
-ROM (rx)  : ORIGIN = 0x00000000, LENGTH = 64K   ← code goes here
-RAM (rwx) : ORIGIN = 0x00010000, LENGTH = 32K   ← stack and variables
+RAM (rwx) : ORIGIN = 0x00000000, LENGTH = 128K   ← code, stack and variables go here
 ```
 
 `_stack_top` is set to `ORIGIN(RAM) + LENGTH(RAM) - 128` to keep the stack out of the signature region.
