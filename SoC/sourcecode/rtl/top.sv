@@ -47,9 +47,9 @@ module top (
     picorv32 #(
         .ENABLE_MUL(1),
         .ENABLE_DIV(1),
-        .COMPRESSED_ISA(1),
-        .ENABLE_IRQ(1),
-        .PROGADDR_IRQ(32'h00000100)
+        .COMPRESSED_ISA(1)
+        // .ENABLE_IRQ(1),
+        // .PROGADDR_IRQ(32'h00000100)
     ) core (
         .clk        (clk),
         .resetn     (resetn),

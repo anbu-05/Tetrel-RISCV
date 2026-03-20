@@ -17,8 +17,8 @@ module top_tb;
         .resetn(resetn)
     );
 
-    // Signature region: 0x00017F80 - 0x00017FFF (32 slots)
-    localparam SIG_BASE_IDX = 32'h00017F80 >> 2;
+    // Signature region: 0x0001FF80 - 0x0001FFFF (128 bytes / 32 registers)
+    localparam SIG_BASE_IDX = 32'h0001FF80;
     localparam DONE_VAL     = 32'hDEADBEEF;
 
     // Tap native PicoRV32 bus
@@ -29,9 +29,10 @@ module top_tb;
 
     // Trigger when SIG_DONE (slot 31) is written
     always @(posedge clk) begin
-        if (mem_valid && mem_ready && (mem_wstrb != 0) && (mem_addr == 32'h00017FFC)) begin
+        if (mem_valid && mem_ready && (mem_wstrb != 0) && (mem_addr == SIG_BASE_IDX + 32'h0000007C)) begin
             $display("[%0t] SIG_DONE written - test completed normally", $time);
             check_signatures();
+            $stop;
         end
     end
 
@@ -40,6 +41,7 @@ module top_tb;
         #10_000_000; // 10ms
         $display("[%0t] TIMEOUT - test did not complete. Partial results:", $time);
         check_signatures();
+        $stop;
     end
 
     task check_signatures;
@@ -48,7 +50,7 @@ module top_tb;
         begin
             $display("---- Signature Results ----");
             for (i = 0; i < 32; i = i + 1) begin
-                val = dut.mem.memory[SIG_BASE_IDX + i];
+                val = dut.mem.memory[(SIG_BASE_IDX >> 2) + i];
 
                 if (^val === 1'bx)
                     $display("  SIG[%02d] UNUSED", i);

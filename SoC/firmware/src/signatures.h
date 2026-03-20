@@ -1,5 +1,5 @@
 // signatures.h
-// 32 signature registers at top of RAM: 0x00017F80 - 0x00017FFF
+// 32 signature registers at top of RAM (128 bytes): 0x0001FF80 - 0x0001FFFF
 //
 // Usage:
 //   SIG(n) = EXP_SIG(tag)   // pass, tag is any 28-bit value you choose
@@ -9,7 +9,7 @@
 #ifndef SIGNATURES_H
 #define SIGNATURES_H
 
-#define SIG_BASE 0x00017F80
+#define SIG_BASE 0x0001FF80
 
 #define SIG(n)    (*(volatile unsigned int *)(SIG_BASE + (n) * 4))
 #define SIG_DONE  SIG(31)

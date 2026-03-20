@@ -8,12 +8,12 @@
 
 #include "signatures.h"
 
-#define UART_STATUS (*(volatile unsigned int *)0x00018000)
-#define UART_DIV    (*(volatile unsigned int *)0x00018004)
-#define UART_DAT    (*(volatile unsigned int *)0x00018008)
+#define UART_STATUS (*(volatile unsigned int *)0xFFFF1000)
+#define UART_DIV    (*(volatile unsigned int *)0xFFFF1004)
+#define UART_DAT    (*(volatile unsigned int *)0xFFFF1008)
 
-#define GPIO_DATA   (*(volatile unsigned int *)0x00020000)
-#define GPIO_DIR    (*(volatile unsigned int *)0x00020004)
+#define GPIO_DATA   (*(volatile unsigned int *)0xFFFF2000)
+#define GPIO_DIR    (*(volatile unsigned int *)0xFFFF2004)
 
 int cpu_add(int a, int b) { return a + b; }
 int cpu_mul(int a, int b) { return a * b; }

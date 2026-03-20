@@ -3,10 +3,10 @@
 
 module axi_interconnect # (
     parameter SLAVE0_ORIGIN = 32'h00000000,
-    parameter SLAVE0_LENGTH = 32'h00018000, // covers ROM + RAM
-    parameter SLAVE1_ORIGIN = 32'h00018000,
+    parameter SLAVE0_LENGTH = 32'h00020000,
+    parameter SLAVE1_ORIGIN = 32'hFFFF1000,
     parameter SLAVE1_LENGTH = 32'h0000000c,
-    parameter SLAVE2_ORIGIN = 32'h00020000,
+    parameter SLAVE2_ORIGIN = 32'hFFFF2000,
     parameter SLAVE2_LENGTH = 32'h00000008
 )(
     axi_interf master_axi,
